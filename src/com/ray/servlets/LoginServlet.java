@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 	User user = new User();
 	String username = request.getParameter("login");
 	String password = request.getParameter("password");
-	
+	//UserDao userDao= new UserDao();
 	if (user.validateLoginAndPassword(username, password)) {
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("acesso-liberado.jsp");
 	    dispatcher.forward(request, response);	    
