@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
 import com.ray.db.DB;
-
+/*essa classe conecta o banco de dados, i guess*/
 @WebFilter(urlPatterns = { "/*" }) // toda requisição vai passar pelo filter
 public class Filter implements javax.servlet.Filter {
 

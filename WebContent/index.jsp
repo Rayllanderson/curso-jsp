@@ -72,7 +72,7 @@ label {
 
 				<tr>
 					<td />
-					<td><input type="submit" value="Salvar"
+					<td><input type="submit" value="Login"
 						style="border-radius: 7px; width: 100%; padding: 0 10px;"></td>
 				</tr>
 			</table>
