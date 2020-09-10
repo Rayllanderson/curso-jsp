@@ -8,8 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<% response.sendRedirect("https://www.google.com/search?client=opera&q=" + request.getParameter("nome") + "&sourceid=opera&ie=UTF-8&oe=UTF-8"); %>
+	
+	<h3>Welcome to the system in JSP!</h3>
 	
 </body>
 </html>
