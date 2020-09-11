@@ -1,101 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%> 
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+	
+	<link href="css/style3.css" type="text/css" rel="stylesheet" />
+	
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>Login</title>
-<style type="text/css">
-@import
-	url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap')
-	;
-
-:root { --primary-color: rgb(17, 86, 102); 
-
-}
-
-* {
-	box-sizing: border-box;
-	outline: 0;
-}
-
-table {
-	margin: 0 auto;
-	text-align: left;
-	background: rgb(0, 128, 192);
-	border-radius: 10px;
-}
-
-body {
-	margin: 0;
-	padding: 0;
-	background: var(--primary-color);
-	font-family: 'Open sans', sans-serif;
-	font-size: 1.1em;
-	line-height: 1.6em;
-}
-
-.container {
-	max-width: 640px;
-	margin: 50px auto;
-	background: #fff;
-	padding: 20px;
-	border-radius: 10px;
-}
-
-input:focus {
-	outline: 1px solid var(--primary-color);
-}
-
-label {
-	color: rgb(252, 252, 252);
-}
-
-</style>
 </head>
 <body>
-	<section class="container">
-		<form action="LoginServlet" method="post"
+
+	<div id="login">
+		<div class="container">
+			<div id="login-row"
+				class="row justify-content-center align-items-center">
+				<div id="login-column" class="col-md-6">
+					<div id="login-box" class="col-md-12">
+						<form id="login-form" class="form" action="LoginServlet" method="post"
 			onsubmit="return validarDados()">
-			<table>
-				<tr>
-					<td><label>Login:</label></td>
-					<td><input type="text" id="login" name="login"
-						style="border-radius: 7px;"></td>
-				</tr>
+							<h3 class="text-center text-info">Login</h3>
+							<div class="form-group">
+								<label for="username" class="text-info">Username:</label><br>
+								<input type="text" name="username" id="username"
+									class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="password" class="text-info">Password:</label><br>
+								<input type="password" name="password" id="password"
+									class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="remember-me" class="text-info"><span>Remember
+										me</span> <span><input id="remember-me" name="remember-me"
+										type="checkbox"></span></label><br> <input type="submit"
+									name="submit" class="btn btn-info btn-md" value="submit">
+							</div>
+							<div id="register-link" class="text-right">
+								<a href="#" class="text-info">Register here</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-				<tr>
-					<td><label>Senha:</label></td>
-					<td><input type="password" id="password" name="password"
-						style="border-radius: 7px;"></td>
-				</tr>
-
-				<tr>
-					<td />
-					<td><input type="submit" value="Login"
-						style="border-radius: 7px; width: 100%; padding: 0 10px;"></td>
-				</tr>
-			</table>
-		</form>
-	</section>
-	<script type="text/javascript">
-		function validarDados() {
-			const login = document.getElementById("login").value;
-			let senha = ''
-			if (document.getElementById("password") != null) {
-				senha = document.getElementById("password").value;
-			}
-			return validarNull(login, senha);
-		}
-
-		function validarNull(login, senha) {
-			if (login.trim() == '' || senha == '') {
-				alert("Um ou mais campos estão vazios")
-				return false
-			}
-			return true;
-		}
-	</script>
+	<script src="javascript/index.js"></script>
 
 </body>
 </html>

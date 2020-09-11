@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	String username = request.getParameter("login");
+	String username = request.getParameter("username");
 	String password = request.getParameter("password");
 	// UserDao userDao= new UserDao();
 	if (userRepository.login(username, password)) {
