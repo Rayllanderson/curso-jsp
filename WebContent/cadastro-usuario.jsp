@@ -1,100 +1,129 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Cadastro de usuário</title>
-<style type="text/css">
-* {
-	margin: 0;
-	padding: 0;
-}
+<link href="css/style1.css" type="text/css" rel="stylesheet" />
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-html, body {
-	height: 100%;
-}
-
-form {
-	text-align: center;
-	width: 96%;
-	max-width: 600px;
-	margin: 0 auto;
-	background: rgb(0, 120, 229);
-	border-radius: 10px; 
-}
-
-form fieldset {
-	padding: 20px 30px;
-}
-
-form legend {
-	text-align: left;
-	font-size: 17px;
-	color: white;
-}
-
-form input[type=text], form input[type="password"] {
-	display: inline-block;
-	margin-top: 30px;
-	width: 30%;
-	padding: 5px 13px;
-}
-
-form select {
-	width: calc(80% + 26px);
-	margin-top: 30px;
-	padding: 5px 13px;
-	display: inline-block;
-}
-
-form h3 {
-	margin-top: 20px;
-}
-
-.input {
-	display: inline-block;
-	margin-top: 10px;
-	text-align: left;
-}
-
-.input {
-	margin-left: 13px;
-	font-size: 16px;
-}
-
-textarea {
-	margin-top: 30px;
-	width: 80%;
-	resize: none;
-	border: 1px solid;
-	height: 120px;
-}
-
-form input[type=submit] {
-	margin-top: 30px;
-	width: 100px;
-	height: 40px;
-	cursor: pointer;
-}
-</style>
 </head>
 <body>
-	<form>
+
+	<form class="form-horizontal" action="CadastrarUser" method="post">
 		<fieldset>
-			<legend>Cadastrar Usuário</legend>
-			<div>
-				<input type="text" id="login" name="login" placeholder="Username" />
-			</div>
-			<div>
-				<input type="password" id="password" name="password"
-					placeholder="Password" />
-			</div>
-			<div>
-				<input type="submit" />
+			<div class="panel panel-primary">
+				<div class="panel-heading">Cadastro de Cliente</div>
+
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-11 control-label">
+							<p class="help-block">
+								<h11>*</h11>
+								Campo ObrigatÃ³rio
+							</p>
+						</div>
+					</div>
+
+					<!-- NOME-->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
+						<div class="col-md-8">
+							<input id="name" name="name" class="form-control input-md"
+								required="" type="text" style="width: 23.3%">
+						</div>
+					</div>
+
+
+
+					<!-- USERNAME-->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Nome">Username
+							<h11>*</h11>
+						</label>
+						<div class="col-md-2">
+							<input id="username" name="username"
+								class="form-control input-md" required="" type="text"
+								style="width: 100%;">
+						</div>
+
+						<!-- Multiple Radios (inline) -->
+
+						<label class="col-md-1 control-label" for="radios">Sexo <h11>*</h11></label>
+						<div class="col-md-4">
+							<label required="" class="radio-inline" for="radios-0"> <input
+								name="sexo" id="sexo" value="feminino" type="radio" required>
+								Feminino
+							</label> <label class="radio-inline" for="radios-1"> <input
+								name="sexo" id="sexo" value="masculino" type="radio">
+								Masculino
+							</label>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Nome">Password
+							<h11>*</h11>
+						</label>
+						<div class="col-md-2">
+							<input id="password" name="password"
+								class="form-control input-md" required="" type="password"
+								style="width: 100%;">
+						</div>
+					</div>
+
+
+
+
+					<!-- Prepended text-->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="prependedtext">Email
+							<h11>*</h11>
+						</label>
+						<div class="col-md-5">
+							<div class="input-group">
+								<span class="input-group-addon"><i
+									class="glyphicon glyphicon-envelope"></i></span> <input id="email"
+									name="email" class="form-control" placeholder="email@email.com"
+									required="" type="text"
+									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+									style="width: 34%;">
+							</div>
+						</div>
+					</div>
+
+					<!-- Button (Double) -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Cadastrar"></label>
+						<div class="col-md-8">
+							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
+								type="Submit">Cadastrar</button>
+							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
+								type="Reset">Cancelar</button>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</fieldset>
 	</form>
+
+
+	<table >
+
+		<c:forEach items="${usuarios}" var="user">
+			<tr >
+				<td style="width: 150px;"><c:out value="${user.name}"></c:out></td>
+				<td><c:out value="${user.username}"></c:out></td>
+				<td><c:out value="${user.sexo}"></c:out></td>
+				<td><a href="CadastrarUser?acao=delete&userId=${user.id}" style="margin-left: 50px">Excluir</a></td>
+				<td><a href="CadastrarUser?acao=editar&userId=${user.id}" style="margin-left: 10px">Editar</a></td>
+				
+			</tr>
+		</c:forEach>
+
+	</table>
 
 </body>
 </html>

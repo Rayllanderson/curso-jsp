@@ -36,7 +36,6 @@ public class LoginServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
-	// UserDao userDao= new UserDao();
 	if (userRepository.login(username, password)) {
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("acesso-liberado.jsp");
 	    dispatcher.forward(request, response);
