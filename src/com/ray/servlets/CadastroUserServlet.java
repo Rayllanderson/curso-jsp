@@ -33,13 +33,19 @@ public class CadastroUserServlet extends HttpServlet {
 	String acao = request.getParameter("acao");
 	if (acao != null) {
 	    Long id = Long.valueOf(request.getParameter("userId"));
-	    if (acao.equals("excluir")) {
+	    if (acao.equals("delete")) {
 		repository.deleteById(id);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
+		request.setAttribute("usuarios", repository.findAll());
+		dispatcher.forward(request, response);
+	    }
+	    if (acao.equals("editar")) {
+		User userc = repository.findById(id);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
+		request.setAttribute("user", userc);
+		dispatcher.forward(request, response);
 	    }
 
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-	    request.setAttribute("usuarios", repository.findAll());
-	    dispatcher.forward(request, response);
 	}
 
     }
@@ -47,6 +53,15 @@ public class CadastroUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	doGet(request, response);
+	saveUser(request);
+	// dispatcher serve pra redirecionar a partir daqui redirecionando
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
+	request.setAttribute("usuarios", repository.findAll());
+	dispatcher.forward(request, response);
+    }
+
+    private void saveUser(HttpServletRequest request) {
+	String id = request.getParameter("id");
 	String name = request.getParameter("name");
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
@@ -54,13 +69,15 @@ public class CadastroUserServlet extends HttpServlet {
 	String sexo = request.getParameter("sexo").toUpperCase().substring(0, 1);
 	System.out.println(name + username + password + email);
 	System.out.println(sexo);
-	User user = new User(null, name, username, password, email, Sexo.valueOf(sexo));
-	repository.save(user);
+	// id é diferente de vazio ? seta id, : (senao) null
+	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email,
+		Sexo.valueOf(sexo));
+	if (user.getId() == null) {
+	    repository.save(user);
+	} else {
+	    repository.update(user);
+	}
 
-	// dispatcher serve pra redirecionar a partir daqui redirecionando
-	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-	request.setAttribute("usuarios", repository.findAll());
-	dispatcher.forward(request, response);
     }
 
 }

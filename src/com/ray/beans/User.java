@@ -17,6 +17,14 @@ public class User {
 	this.email = email;
 	this.sexo = sexo;
     }
+    
+    public User(String name, String username, String password, String email, Sexo sexo) {
+	this.name = name;
+	this.username = username;
+	this.password = password;
+	this.email = email;
+	this.sexo = sexo;
+    }
 
     public User() {
 	// TODO Auto-generated constructor stub
@@ -54,8 +62,8 @@ public class User {
 	this.email = email;
     }
 
-    public Sexo getSexo() {
-	return sexo;
+    public String getSexo() {
+	return sexo.toString();
     }
 
     public void setSexo(Sexo sexo) {

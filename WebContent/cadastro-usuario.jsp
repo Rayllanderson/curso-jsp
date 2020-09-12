@@ -25,12 +25,22 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Nome">ID</label>
+						<div class="col-md-8">
+							<input id="id" name="id" class="form-control input-md"
+								 type="text" style="width: 23.3%"
+								value="${user.id}" readonly="readonly">
+						</div>
+					</div>
+
 					<!-- NOME-->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
 						<div class="col-md-8">
 							<input id="name" name="name" class="form-control input-md"
-								required="" type="text" style="width: 23.3%">
+								required="" type="text" style="width: 23.3%"
+								value="${user.name}">
 						</div>
 					</div>
 
@@ -44,7 +54,7 @@
 						<div class="col-md-2">
 							<input id="username" name="username"
 								class="form-control input-md" required="" type="text"
-								style="width: 100%;">
+								style="width: 100%;" value="${user.username}">
 						</div>
 
 						<!-- Multiple Radios (inline) -->
@@ -52,11 +62,11 @@
 						<label class="col-md-1 control-label" for="radios">Sexo <h11>*</h11></label>
 						<div class="col-md-4">
 							<label required="" class="radio-inline" for="radios-0"> <input
-								name="sexo" id="sexo" value="feminino" type="radio" required>
-								Feminino
+								name="sexo" id="sexo" value="feminino" type="radio" required
+								value="${user.sexo}"> Feminino
 							</label> <label class="radio-inline" for="radios-1"> <input
-								name="sexo" id="sexo" value="masculino" type="radio">
-								Masculino
+								name="sexo" id="sexo" value="masculino" type="radio"
+								value="${user.sexo}"> Masculino
 							</label>
 						</div>
 					</div>
@@ -69,7 +79,7 @@
 						<div class="col-md-2">
 							<input id="password" name="password"
 								class="form-control input-md" required="" type="password"
-								style="width: 100%;">
+								style="width: 100%;" value="${user.password}">
 						</div>
 					</div>
 
@@ -88,7 +98,7 @@
 									name="email" class="form-control" placeholder="email@email.com"
 									required="" type="text"
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-									style="width: 34%;">
+									style="width: 34%;" value="${user.email}">
 							</div>
 						</div>
 					</div>
@@ -98,7 +108,7 @@
 						<label class="col-md-2 control-label" for="Cadastrar"></label>
 						<div class="col-md-8">
 							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
-								type="Submit">Cadastrar</button>
+								type="Submit">Salvar</button>
 							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
 								type="Reset">Cancelar</button>
 						</div>
@@ -110,16 +120,18 @@
 	</form>
 
 
-	<table >
+	<table>
 
 		<c:forEach items="${usuarios}" var="user">
-			<tr >
+			<tr>
 				<td style="width: 150px;"><c:out value="${user.name}"></c:out></td>
 				<td><c:out value="${user.username}"></c:out></td>
 				<td><c:out value="${user.sexo}"></c:out></td>
-				<td><a href="CadastrarUser?acao=delete&userId=${user.id}" style="margin-left: 50px">Excluir</a></td>
-				<td><a href="CadastrarUser?acao=editar&userId=${user.id}" style="margin-left: 10px">Editar</a></td>
-				
+				<td><a href="CadastrarUser?acao=delete&userId=${user.id}"
+					style="margin-left: 50px">Excluir</a></td>
+				<td><a href="CadastrarUser?acao=editar&userId=${user.id}"
+					style="margin-left: 10px">Editar</a></td>
+
 			</tr>
 		</c:forEach>
 

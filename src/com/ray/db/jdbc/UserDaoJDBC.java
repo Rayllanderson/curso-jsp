@@ -116,4 +116,51 @@ public class UserDaoJDBC implements UserRepository {
 	
     }
 
+    @Override
+    public User findById(Long id) {
+	String sql = "select * from users where id = " + id;
+	PreparedStatement st = null;
+	ResultSet rs = null;
+	try {
+	    st = conn.prepareStatement(sql);
+	    rs = st.executeQuery();
+	    if (rs.next()) {
+		return instanciarUser(rs);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}finally {
+	    DB.closeResultSet(rs);
+	    DB.closeStatement(st);
+	}
+	return null;
+    }
+
+    @Override
+    public void update(User user) {
+	PreparedStatement st = null;
+	try {
+	    st = conn.prepareStatement("update users set name = ?, username = ?, password = ?, email = ?, sexo = ? where id = ?");
+	    st.setString(1, user.getName());
+	    st.setString(2, user.getUsername());
+	    st.setString(3, user.getPassword());
+	    st.setString(4, user.getEmail());
+	    st.setString(5, user.getSexo());
+	    st.setLong(6, user.getId());
+	    st.executeUpdate();
+	    conn.commit();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    try {
+		conn.rollback();
+	    } catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	    }
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
+	
+    }
 }

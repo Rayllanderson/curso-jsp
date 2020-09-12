@@ -10,10 +10,14 @@ public interface UserRepository {
     
     public void save(User user);
     
+    public User findById(Long id);
+    
     public List<User> findAll();
     
-    public User editById(Long id);
+    public void update(User user);
     
     public void deleteById(Long id);
+
+
 
 }
