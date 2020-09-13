@@ -2,9 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <head>
-<link href="css/style1.css" type="text/css" rel="stylesheet" />
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <!--===============================================================================================-->	
@@ -167,8 +169,8 @@
 										<td class="cell100 column3"><c:out value="${user.sexo}"></c:out></td>
 										<td class="cell100 column4"><a
 											href="CadastrarUser?acao=delete&userId=${user.id}"><img
-												src="resource/img/excluir.png" width="30px" height="30px"></a></td>
-										<td class="cell100 column5"title="Excluir"><a
+												src="resource/img/excluir.png" width="30px" height="30px" title="Excluir"></a></td>
+										<td class="cell100 column5" ><a
 											href="CadastrarUser?acao=editar&userId=${user.id}"><img
 												src="resource/img/edit.png" width="30px" height="30px" title="Editar"></a></td>
 									</tr>
