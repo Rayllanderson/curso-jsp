@@ -7,6 +7,20 @@
 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/table.css">
+
+
 </head>
 <body>
 
@@ -29,8 +43,8 @@
 						<label class="col-md-2 control-label" for="Nome">ID</label>
 						<div class="col-md-8">
 							<input id="id" name="id" class="form-control input-md"
-								 type="text" style="width: 23.3%"
-								value="${user.id}" readonly="readonly">
+								type="text" style="width: 23.3%" value="${user.id}"
+								readonly="readonly">
 						</div>
 					</div>
 
@@ -120,22 +134,49 @@
 	</form>
 
 
-	<table>
 
-		<c:forEach items="${usuarios}" var="user">
-			<tr>
-				<td style="width: 150px;"><c:out value="${user.name}"></c:out></td>
-				<td><c:out value="${user.username}"></c:out></td>
-				<td><c:out value="${user.sexo}"></c:out></td>
-				<td><a href="CadastrarUser?acao=delete&userId=${user.id}"
-					style="margin-left: 50px">Excluir</a></td>
-				<td><a href="CadastrarUser?acao=editar&userId=${user.id}"
-					style="margin-left: 10px">Editar</a></td>
 
-			</tr>
-		</c:forEach>
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table">
 
-	</table>
+					<div class="row header">
+						<div class="cell">Nome</div>
+						<div class="cell">Username</div>
+						<div class="cell">Sexo</div>
+						<div class="cell">Excluir</div>
+						<div class="cell">Editar</div>
+						<div class="cell"></div>
+					</div>
+			<c:forEach items="${usuarios}" var="user">
+					<div class="row">
+							<div class="cell" data-title="Nome">
+								<c:out value="${user.name}"></c:out>
+							</div>
+							<div class="cell" data-title="Username">
+								<c:out value="${user.username}"></c:out>
+							</div>
+							<div class="cell" data-title="Sexo">
+								<c:out value="${user.sexo}"></c:out>
+							</div>
+							<div class="cell" data-title="Location">
+								<a href="CadastrarUser?acao=delete&userId=${user.id}"><img src="resource/img/excluir.png" width="30px" height="30px"></a>
+							</div>
+							<div class="cell" data-title="Location">
+								<a href="CadastrarUser?acao=editar&userId=${user.id}"><img src="resource/img/edit.png" width="30px" height="30px"></a>
+							</div>
+						</div>
+			</c:forEach>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
 
 </body>
 </html>
