@@ -85,20 +85,11 @@
 								style="width: 100%;" value="${user.username}">
 						</div>
 
-						<!-- Multiple Radios (inline) -->
 
-						<label class="col-md-1 control-label" for="radios">Sexo <h11>*</h11></label>
-						<div class="col-md-4">
-							<label required class="radio-inline" for="radios-0"> <input
-								name="sexo" id="sexo" type="radio" required="required"
-								value="feminino"> Feminino
-							</label> <label class="radio-inline" for="radios-1"> <input
-								name="sexo" id="sexo" type="radio" value="masculino">
-								Masculino
-							</label>
-						</div>
 					</div>
-
+					
+					
+				
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Nome">Password
@@ -111,6 +102,18 @@
 						</div>
 					</div>
 
+
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="telefone">Telefone
+							<h11>*</h11>
+						</label>
+						<div class="col-md-2">
+							<input id="telefone" name="telefone"
+								class="form-control input-md" required type="text"  data-mask="(00) 00000-0000" data-mask-selectonfocus="true"
+								style="width: 100%;" value="${user.telefone}" >
+						</div>
+					</div>
 
 
 					<!-- Prepended text-->
@@ -157,7 +160,7 @@
 								<tr class="row100 head">
 									<th class="cell100 column1">Nome</th>
 									<th class="cell100 column2">Username</th>
-									<th class="cell100 column3">Sexo</th>
+									<th class="cell100 column3">Telefone</th>
 									<th class="cell100 column4">Excluir</th>
 									<th class="cell100 column5">Editar</th>
 								</tr>
@@ -173,7 +176,8 @@
 										<td class="cell100 column1"><c:out value="${user.name}"></c:out></td>
 										<td class="cell100 column2"><c:out
 												value="${user.username}"></c:out></td>
-										<td class="cell100 column3"><c:out value="${user.sexo}"></c:out></td>
+										<td class="cell100 column3"><c:out
+												value="${user.telefone}"></c:out></td>
 										<td class="cell100 column4"><a
 											href="CadastrarUser?acao=delete&userId=${user.id}"><img
 												src="resource/img/excluir.png" width="30px" height="30px"
@@ -200,6 +204,8 @@
 			alert(mensagem);
 		}
 	</script>
+	
+	<script src="javascript/jquery.mask.js"></script>
 
 </body>
 </html>

@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ray.beans.Sexo;
 import com.ray.beans.User;
 import com.ray.db.DB;
 import com.ray.db.DbException;
@@ -49,7 +48,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public void save(User user) throws UsernameExistenteException {
-	String sql = "INSERT INTO users(username, password, name, sexo, email) VALUES (?, ?, ?, ?, ?)";
+	String sql = "INSERT INTO users(username, password, name, telefone, email) VALUES (?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
 	    if (!this.usernameExistente(user.getUsername())) {
@@ -57,7 +56,7 @@ public class UserDaoJDBC implements UserRepository {
 		st.setString(1, user.getUsername());
 		st.setString(2, user.getPassword());
 		st.setString(3, user.getName());
-		st.setString(4, user.getSexo().toString());
+		st.setString(4, user.getTelefone());
 		st.setString(5, user.getEmail());
 		st.execute();
 		conn.commit();
@@ -102,9 +101,9 @@ public class UserDaoJDBC implements UserRepository {
     private User instanciarUser(ResultSet rs) throws SQLException {
 	String name = rs.getString("name");
 	String username = rs.getString("username");
-	String sexo = rs.getString("sexo");
+	String telefone = rs.getString("telefone");
 	String email = rs.getString("email");
-	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, Sexo.valueOf(sexo));
+	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone);
     }
 
     @Override
@@ -151,12 +150,12 @@ public class UserDaoJDBC implements UserRepository {
 		if (username.equals(this.findById(user.getId()).getUsername())) {
 		    username = this.findById(user.getId()).getUsername();
 		    st = conn.prepareStatement(
-			    "update users set name = ?, username = ?, password = ?, email = ?, sexo = ? where id = ?");
+			    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ? where id = ?");
 		    st.setString(1, user.getName());
 		    st.setString(2, username);
 		    st.setString(3, user.getPassword());
 		    st.setString(4, user.getEmail());
-		    st.setString(5, user.getSexo());
+		    st.setString(5, user.getTelefone());
 		    st.setLong(6, user.getId());
 		    st.executeUpdate();
 		    conn.commit();

@@ -7,23 +7,23 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Sexo sexo;
+    private String telefone;
 
-    public User(Long id, String name, String username, String password, String email, Sexo sexo) {
+    public User(Long id, String name, String username, String password, String email, String telefone) {
 	this.id = id;
 	this.name = name;
 	this.username = username;
 	this.password = password;
 	this.email = email;
-	this.sexo = sexo;
+	this.telefone = telefone;
     }
     
-    public User(String name, String username, String password, String email, Sexo sexo) {
+    public User(String name, String username, String password, String email, String string) {
 	this.name = name;
 	this.username = username;
 	this.password = password;
 	this.email = email;
-	this.sexo = sexo;
+	this.telefone = string;
     }
 
     public User() {
@@ -62,16 +62,12 @@ public class User {
 	this.email = email;
     }
 
-    public String getSexo() {
-	return sexo.toString();
+    public String getTelefone() {
+	return this.telefone;
     }
     
-    public String getSexoHtml() {
- 	return this.getSexo().equals("M") ? "Masculino" : "Feminino";
-     }
-
-    public void setSexo(Sexo sexo) {
-	this.sexo = sexo;
+    public void setTelefone(String telefone) {
+	this.telefone = telefone;
     }
 
     public String getName() {
@@ -80,11 +76,5 @@ public class User {
 
     public void setName(String name) {
 	this.name = name;
-    }
-
-    @Override
-    public String toString() {
-	return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", email="
-		+ email + ", sexo=" + sexo + "]";
     }
 }
