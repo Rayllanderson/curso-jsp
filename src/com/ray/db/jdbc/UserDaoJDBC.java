@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,14 +52,16 @@ public class UserDaoJDBC implements UserRepository {
 	String sql = "INSERT INTO users(username, password, name, sexo, email) VALUES (?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
-	    st = conn.prepareStatement(sql);
-	    st.setString(1, user.getUsername());
-	    st.setString(2, user.getPassword());
-	    st.setString(3, user.getName());
-	    st.setString(4, user.getSexo().toString());
-	    st.setString(5, user.getEmail());
-	    st.execute();
-	    conn.commit();
+	    if (!this.usernameExistente(user.getUsername())) {
+		st = conn.prepareStatement(sql);
+		st.setString(1, user.getUsername());
+		st.setString(2, user.getPassword());
+		st.setString(3, user.getName());
+		st.setString(4, user.getSexo().toString());
+		st.setString(5, user.getEmail());
+		st.execute();
+		conn.commit();
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    try {
@@ -87,7 +90,7 @@ public class UserDaoJDBC implements UserRepository {
 	    return list;
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	}finally {
+	} finally {
 	    DB.closeResultSet(rs);
 	    DB.closeStatement(st);
 	}
@@ -113,7 +116,7 @@ public class UserDaoJDBC implements UserRepository {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-	
+
     }
 
     @Override
@@ -129,7 +132,7 @@ public class UserDaoJDBC implements UserRepository {
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	}finally {
+	} finally {
 	    DB.closeResultSet(rs);
 	    DB.closeStatement(st);
 	}
@@ -139,28 +142,58 @@ public class UserDaoJDBC implements UserRepository {
     @Override
     public void update(User user) {
 	PreparedStatement st = null;
+	String username = user.getUsername();
 	try {
-	    st = conn.prepareStatement("update users set name = ?, username = ?, password = ?, email = ?, sexo = ? where id = ?");
-	    st.setString(1, user.getName());
-	    st.setString(2, user.getUsername());
-	    st.setString(3, user.getPassword());
-	    st.setString(4, user.getEmail());
-	    st.setString(5, user.getSexo());
-	    st.setLong(6, user.getId());
-	    st.executeUpdate();
-	    conn.commit();
+
+	    if ((usernameExistente(user.getUsername()))) {
+		username = this.findById(user.getId()).getUsername();
+		
+		/*if (username.equals(this.findById(user.getId()).getUsername())) {
+		    	//nao fazer nada
+		}else{
+			//lançar error de username existente
+		}*/
+	    }
+		st = conn.prepareStatement(
+			"update users set name = ?, username = ?, password = ?, email = ?, sexo = ? where id = ?");
+		st.setString(1, user.getName());
+		st.setString(2, username);
+		st.setString(3, user.getPassword());
+		st.setString(4, user.getEmail());
+		st.setString(5, user.getSexo());
+		st.setLong(6, user.getId());
+		st.executeUpdate();
+		conn.commit();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    try {
 		conn.rollback();
 	    } catch (SQLException e1) {
-		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	    }
 	    throw new DbException(e.getMessage());
 	} finally {
 	    DB.closeStatement(st);
 	}
-	
+    }
+
+    private boolean usernameExistente(String username) {
+	Statement st = null;
+	ResultSet rs = null;
+	try {
+	    st = this.conn.createStatement();
+	    rs = st.executeQuery("select username from users");
+	    while (rs.next()) {
+		if (rs.getString("username").equals(username)) {
+		    return true;
+		}
+	    }
+	    return false;
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeResultSet(rs);
+	    DB.closeStatement(st);
+	}
     }
 }

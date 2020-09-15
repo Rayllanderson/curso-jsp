@@ -83,10 +83,10 @@
 						<div class="col-md-4">
 							<label required class="radio-inline" for="radios-0"> <input
 								name="sexo" id="sexo" type="radio" required="required"
-								value="${user.getSexoHtml()}"> Feminino
+								value="feminino"> Feminino
 							</label> <label class="radio-inline" for="radios-1"> <input
 								name="sexo" id="sexo" type="radio"
-								value="${Sexo.M}"> Masculino
+								value="masculino"> Masculino
 							</label>
 						</div>
 					</div>
