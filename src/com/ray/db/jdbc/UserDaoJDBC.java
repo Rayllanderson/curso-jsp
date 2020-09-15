@@ -48,7 +48,7 @@ public class UserDaoJDBC implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public void save(User user) throws UsernameExistenteException {
 	String sql = "INSERT INTO users(username, password, name, sexo, email) VALUES (?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
@@ -61,6 +61,8 @@ public class UserDaoJDBC implements UserRepository {
 		st.setString(5, user.getEmail());
 		st.execute();
 		conn.commit();
+	    } else {
+		throw new UsernameExistenteException("Não foi possível cadastrar. Username já existente!");
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -144,26 +146,24 @@ public class UserDaoJDBC implements UserRepository {
 	PreparedStatement st = null;
 	String username = user.getUsername();
 	try {
-
 	    if ((usernameExistente(user.getUsername()))) {
-		username = this.findById(user.getId()).getUsername();
-		
-		/*if (username.equals(this.findById(user.getId()).getUsername())) {
-		    	//nao fazer nada
-		}else{
-			//lançar error de username existente
-		}*/
+		// Verificando se o username atual é igual ao username dele mesmo
+		if (username.equals(this.findById(user.getId()).getUsername())) {
+		    username = this.findById(user.getId()).getUsername();
+		    st = conn.prepareStatement(
+			    "update users set name = ?, username = ?, password = ?, email = ?, sexo = ? where id = ?");
+		    st.setString(1, user.getName());
+		    st.setString(2, username);
+		    st.setString(3, user.getPassword());
+		    st.setString(4, user.getEmail());
+		    st.setString(5, user.getSexo());
+		    st.setLong(6, user.getId());
+		    st.executeUpdate();
+		    conn.commit();
+		} else {
+		    throw new UsernameExistenteException("Username já existente!");
+		}
 	    }
-		st = conn.prepareStatement(
-			"update users set name = ?, username = ?, password = ?, email = ?, sexo = ? where id = ?");
-		st.setString(1, user.getName());
-		st.setString(2, username);
-		st.setString(3, user.getPassword());
-		st.setString(4, user.getEmail());
-		st.setString(5, user.getSexo());
-		st.setLong(6, user.getId());
-		st.executeUpdate();
-		conn.commit();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    try {

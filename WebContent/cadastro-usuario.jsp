@@ -4,33 +4,41 @@
 <head>
 
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css"
+	href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 
 
 </head>
 <body>
 
-	<form class="form-horizontal" action="CadastrarUser" method="post" id="formUser">
+	<form class="form-horizontal" action="CadastrarUser" method="post"
+		id="formUser">
 		<fieldset>
 			<div class="panel panel-primary">
 				<div class="panel-heading">Cadastro de Cliente</div>
@@ -85,8 +93,8 @@
 								name="sexo" id="sexo" type="radio" required="required"
 								value="feminino"> Feminino
 							</label> <label class="radio-inline" for="radios-1"> <input
-								name="sexo" id="sexo" type="radio"
-								value="masculino"> Masculino
+								name="sexo" id="sexo" type="radio" value="masculino">
+								Masculino
 							</label>
 						</div>
 					</div>
@@ -157,9 +165,9 @@
 						</table>
 					</div>
 
-					<div class="table100-body js-pscroll" style="margin-top:0px;">
+					<div class="table100-body js-pscroll" style="margin-top: 0px;">
 						<c:forEach items="${usuarios}" var="user">
-							<table >
+							<table>
 								<tbody>
 									<tr class="row100 body">
 										<td class="cell100 column1"><c:out value="${user.name}"></c:out></td>
@@ -168,10 +176,12 @@
 										<td class="cell100 column3"><c:out value="${user.sexo}"></c:out></td>
 										<td class="cell100 column4"><a
 											href="CadastrarUser?acao=delete&userId=${user.id}"><img
-												src="resource/img/excluir.png" width="30px" height="30px" title="Excluir"></a></td>
-										<td class="cell100 column5" ><a
+												src="resource/img/excluir.png" width="30px" height="30px"
+												title="Excluir"></a></td>
+										<td class="cell100 column5"><a
 											href="CadastrarUser?acao=editar&userId=${user.id}"><img
-												src="resource/img/edit.png" width="30px" height="30px" title="Editar"></a></td>
+												src="resource/img/edit.png" width="30px" height="30px"
+												title="Editar"></a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -183,6 +193,15 @@
 	</div>
 
 
+	<script type="text/javascript">
+		let mensagem = "${msg}";
+		console.log(mensagem);
+		if (mensagem == '') {
+
+		} else {
+			alert(mensagem);
+		}
+	</script>
 
 </body>
 </html>

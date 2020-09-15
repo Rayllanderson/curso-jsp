@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ray.beans.Sexo;
 import com.ray.beans.User;
+import com.ray.db.jdbc.UsernameExistenteException;
 import com.ray.repository.DaoFactory;
 import com.ray.repository.UserRepository;
 
@@ -72,10 +73,14 @@ public class CadastroUserServlet extends HttpServlet {
 	// id é diferente de vazio ? seta id, : (senao) null
 	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email,
 		Sexo.valueOf(sexo));
-	if (user.getId() == null) {
-	    repository.save(user);
-	} else {
-	    repository.update(user);
+	try {
+	    if (user.getId() == null) {
+		repository.save(user);
+	    } else {
+		repository.update(user);
+	    }
+	} catch (UsernameExistenteException e) {
+	    request.setAttribute("msg", e.getMessage());
 	}
     }
 
