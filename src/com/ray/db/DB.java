@@ -8,38 +8,40 @@ import java.sql.Statement;
 
 public class DB {
 
-    private static String url = "jdbc:postgresql://localhost:5432/curso_jsp?autoReconnect=true";
-    private static String password = "admin";
-    private static String user = "postgres";
     private static Connection conn = null;
 
-    static {
-	conectar();
-    }
-
-    public DB() {
-	conectar();
-    }
-
-    private static void conectar() {
-	try {
-	    if (conn == null) {
-		Class.forName("org.postgresql.Driver");
-		conn = DriverManager.getConnection(url, user, password);
-		conn.setAutoCommit(false); // pra nao salvar automaticamente, algo com rollback
-		System.out.println("conectado com sucesso... duvido muito");
-	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new DbException("Erro ao conectar ao banco de dados");
-	}
-    }
-
     public static Connection getConnection() {
+
+	if (conn == null) {
+	    try {
+		String url = "jdbc:mysql://localhost:3306/curso-jsp";
+		String user = "root";
+		String password = "12345";
+		Class.forName("com.mysql.jdbc.Driver");
+		conn = DriverManager.getConnection(url, user, password);
+		conn.setAutoCommit(false);
+		System.out.println("hmm");
+		
+	    } catch (SQLException e) {
+		throw new DbException(e.getMessage());
+	    } catch (ClassNotFoundException e) {
+		e.printStackTrace();
+	    }
+	}
 	return conn;
     }
 
-    public static void closeStatement(Statement st) {
+    public static void closeConnection() {
+	try {
+	    if (conn != null) {
+		conn.close();
+	    }
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	}
+    }
+    
+    public static void closeStatement (Statement st) {
 	if (st != null) {
 	    try {
 		st.close();
@@ -48,7 +50,7 @@ public class DB {
 	    }
 	}
     }
-
+    
     public static void closeResultSet(ResultSet rs) {
 	if (rs != null) {
 	    try {

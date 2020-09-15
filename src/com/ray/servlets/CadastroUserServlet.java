@@ -32,32 +32,32 @@ public class CadastroUserServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	String acao = request.getParameter("acao");
 	if (acao != null) {
-	    Long id = Long.valueOf(request.getParameter("userId"));
 	    if (acao.equals("delete")) {
+		Long id = Long.valueOf(request.getParameter("userId"));
 		repository.deleteById(id);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-		request.setAttribute("usuarios", repository.findAll());
-		dispatcher.forward(request, response);
-	    }
-	    if (acao.equals("editar")) {
+		listarTodos(request, response);
+	    } else if (acao.equals("editar")) {
+		Long id = Long.valueOf(request.getParameter("userId"));
 		User userc = repository.findById(id);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
 		request.setAttribute("user", userc);
 		dispatcher.forward(request, response);
+	    } else if (acao.equals("listartodos")) {
+		listarTodos(request, response);
 	    }
-
 	}
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	doGet(request, response);
-	saveUser(request);
-	// dispatcher serve pra redirecionar a partir daqui redirecionando
-	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-	request.setAttribute("usuarios", repository.findAll());
-	dispatcher.forward(request, response);
+	String acao = request.getParameter("acao");
+	if (acao != null && acao.equals("reset")) {
+	    listarTodos(request, response);
+	} else {
+	    saveUser(request);
+	    listarTodos(request, response);
+	}
     }
 
     private void saveUser(HttpServletRequest request) {
@@ -77,7 +77,13 @@ public class CadastroUserServlet extends HttpServlet {
 	} else {
 	    repository.update(user);
 	}
+    }
 
+    private void listarTodos(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException {
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
+	request.setAttribute("usuarios", repository.findAll());
+	dispatcher.forward(request, response);
     }
 
 }

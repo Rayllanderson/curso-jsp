@@ -30,7 +30,7 @@
 </head>
 <body>
 
-	<form class="form-horizontal" action="CadastrarUser" method="post">
+	<form class="form-horizontal" action="CadastrarUser" method="post" id="formUser">
 		<fieldset>
 			<div class="panel panel-primary">
 				<div class="panel-heading">Cadastro de Cliente</div>
@@ -81,12 +81,12 @@
 
 						<label class="col-md-1 control-label" for="radios">Sexo <h11>*</h11></label>
 						<div class="col-md-4">
-							<label required="" class="radio-inline" for="radios-0"> <input
-								name="sexo" id="sexo" value="feminino" type="radio" required
-								value="${user.sexo}"> Feminino
+							<label required class="radio-inline" for="radios-0"> <input
+								name="sexo" id="sexo" type="radio" required="required"
+								value="${user.getSexoHtml()}"> Feminino
 							</label> <label class="radio-inline" for="radios-1"> <input
-								name="sexo" id="sexo" value="masculino" type="radio"
-								value="${user.sexo}"> Masculino
+								name="sexo" id="sexo" type="radio"
+								value="${Sexo.M}"> Masculino
 							</label>
 						</div>
 					</div>
@@ -102,7 +102,6 @@
 								style="width: 100%;" value="${user.password}">
 						</div>
 					</div>
-
 
 
 
@@ -130,7 +129,7 @@
 							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 								type="Submit">Salvar</button>
 							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-								type="Reset">Cancelar</button>
+								onclick="document.getElementById('formUser').action = 'CadastrarUser?acao=reset'">Cancelar</button>
 						</div>
 					</div>
 
@@ -158,9 +157,9 @@
 						</table>
 					</div>
 
-					<div class="table100-body js-pscroll">
+					<div class="table100-body js-pscroll" style="margin-top:0px;">
 						<c:forEach items="${usuarios}" var="user">
-							<table>
+							<table >
 								<tbody>
 									<tr class="row100 body">
 										<td class="cell100 column1"><c:out value="${user.name}"></c:out></td>

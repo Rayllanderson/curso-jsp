@@ -22,7 +22,7 @@ a {
 
 	<h3>Welcome to the system in JSP!</h3>
 	<p>What do you wanto to do?</p>
-	<a href="cadastro-usuario.jsp">Cadastrar Usuário</a>
+	<a href="CadastrarUser?acao=listartodos">Cadastrar Usuário</a> <!-- vai cair no método GET -->
 
 </body>
 </html>

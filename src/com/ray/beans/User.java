@@ -65,6 +65,10 @@ public class User {
     public String getSexo() {
 	return sexo.toString();
     }
+    
+    public String getSexoHtml() {
+ 	return this.getSexo().equals("M") ? "Masculino" : "Feminino";
+     }
 
     public void setSexo(Sexo sexo) {
 	this.sexo = sexo;
