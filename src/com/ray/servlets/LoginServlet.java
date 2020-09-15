@@ -40,8 +40,9 @@ public class LoginServlet extends HttpServlet {
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("acesso-liberado.jsp");
 	    dispatcher.forward(request, response);
 	} else {
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("acesso-negado.jsp");
-	    dispatcher.forward(request, response);
+	   request.setAttribute("loginInvalido", "Login ou senha incorretos");
+	   RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+	   dispatcher.forward(request, response);
 	}
 
     }

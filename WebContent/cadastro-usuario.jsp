@@ -196,9 +196,7 @@
 	<script type="text/javascript">
 		let mensagem = "${msg}";
 		console.log(mensagem);
-		if (mensagem == '') {
-
-		} else {
+		if (!mensagem == '') {
 			alert(mensagem);
 		}
 	</script>
