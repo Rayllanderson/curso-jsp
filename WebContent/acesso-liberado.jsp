@@ -11,7 +11,8 @@
 	url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap')
 	;
 
-:root { --primary-color: rgb(10, 0, 102);
+:root { -
+	-primary-color: rgb(10, 0, 102);
 }
 
 * {
@@ -42,9 +43,14 @@ body {
 	<div class="container">
 		<h3>Welcome to the system in JSP!</h3>
 		<p>What do you wanto to do?</p>
+
 		<a href="CadastrarUser?acao=listartodos"><img
 			src="resource/img/user-icon.png" width="40px" height="40px"
-			title="Cadastrar Novo Usuário"></a>
+			title="Cadastrar Novo Usuário"></a> 
+			<a
+			href="CadastrarProduto?acao=listartodos"><img
+			src="resource/img/inser-product.png" width="50px" height="50px"
+			title="Cadastrar Novo Produto" style="margin-top: 10px; margin-left:10px; margin-bottom: -5px"></a>
 		<!-- vai cair no método GET -->
 	</div>
 </body>
