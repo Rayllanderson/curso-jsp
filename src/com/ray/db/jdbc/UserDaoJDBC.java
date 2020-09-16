@@ -149,20 +149,21 @@ public class UserDaoJDBC implements UserRepository {
 		// Verificando se o username atual é igual ao username dele mesmo
 		if (username.equals(this.findById(user.getId()).getUsername())) {
 		    username = this.findById(user.getId()).getUsername();
-		    st = conn.prepareStatement(
-			    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ? where id = ?");
-		    st.setString(1, user.getName());
-		    st.setString(2, username);
-		    st.setString(3, user.getPassword());
-		    st.setString(4, user.getEmail());
-		    st.setString(5, user.getTelefone());
-		    st.setLong(6, user.getId());
-		    st.executeUpdate();
-		    conn.commit();
 		} else {
 		    throw new UsernameExistenteException("Username já existente!");
 		}
 	    }
+	    st = conn.prepareStatement(
+		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ? where id = ?");
+	    st.setString(1, user.getName());
+	    st.setString(2, username);
+	    st.setString(3, user.getPassword());
+	    st.setString(4, user.getEmail());
+	    st.setString(5, user.getTelefone());
+	    st.setLong(6, user.getId());
+	    st.executeUpdate();
+	    conn.commit();
+	    
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    try {
@@ -176,6 +177,11 @@ public class UserDaoJDBC implements UserRepository {
 	}
     }
 
+    /**
+     * 
+     * @param username
+     * @return true caso o usuario já exista
+     */
     private boolean usernameExistente(String username) {
 	Statement st = null;
 	ResultSet rs = null;

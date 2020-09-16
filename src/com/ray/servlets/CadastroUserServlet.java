@@ -78,7 +78,8 @@ public class CadastroUserServlet extends HttpServlet {
 		repository.update(user);
 	    }
 	} catch (UsernameExistenteException e) {
-	    request.setAttribute("msg", e.getMessage());
+	    request.setAttribute("user", user);
+	    request.setAttribute("msg", e.getMessage());  
 	}
     }
 
