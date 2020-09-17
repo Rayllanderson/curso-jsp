@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	pageEncoding="ISO-8859-1"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +40,7 @@
 
 </head>
 <body>
-		<form class="form-horizontal" action="CadastrarProduto" method="post"
+	<form class="form-horizontal" action="CadastrarProduto" method="post"
 		id="formUser">
 		<fieldset>
 			<div class="panel panel-primary">
@@ -70,7 +70,7 @@
 						<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
 						<div class="col-md-8">
 							<input id="nome" name="nome" class="form-control input-md"
-								required="" type="text" style="width: 23.3%"
+								required type="text" style="width: 23.3%"
 								value="${produto.nome}">
 						</div>
 					</div>
@@ -83,25 +83,24 @@
 						</label>
 						<div class="col-md-2">
 							<input id="quantidade" name="quantidade"
-								class="form-control input-md" required="" type="text"
+								class="form-control input-md" required type="text"
 								style="width: 100%;" value="${produto.quantidade}">
 						</div>
 					</div>
-				
-					
+
+
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="Nome">Valor
-							<h11>*</h11>
+						<label class="col-md-2 control-label" for="Nome">Valor <h11>*</h11>
 						</label>
 						<div class="col-md-2">
-							<input id="valor" name="valor"
-								class="form-control input-md" required="" type="text"
-								style="width: 100%;" value="${produto.valor}">
+							<input id="valor" name="valor" class="form-control input-md"
+								required type="text" style="width: 100%;"
+								value="${produto.valor}">
 						</div>
 					</div>
-					
-					
+
+
 					<!-- Button (Double) -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Cadastrar"></label>
@@ -117,10 +116,10 @@
 			</div>
 		</fieldset>
 	</form>
-	
-	
-	
-	
+
+
+
+
 	<div class="limiter">
 		<div class="container-table100">
 			<div class="wrap-table100">
@@ -144,17 +143,18 @@
 							<table>
 								<tbody>
 									<tr class="row100 body">
-										<td class="cell100 column1"><c:out value="${produto.nome}"></c:out></td>
+										<td class="cell100 column1"><c:out
+												value="${produto.nome}"></c:out></td>
 										<td class="cell100 column2"><c:out
 												value="${produto.quantidade}"></c:out></td>
-										<td class="cell100 column3"><c:out
+										<td class="cell100 column3">R$ <c:out
 												value="${produto.valor}"></c:out></td>
 										<td class="cell100 column4"><a
-											href="CadastrarProduto?acao=delete&userId=${user.id}"><img
+											href="CadastrarProduto?acao=delete&produtoId=${produto.id}"><img
 												src="resource/img/excluir.png" width="30px" height="30px"
 												title="Excluir"></a></td>
 										<td class="cell100 column5"><a
-											href="CadastrarProduto?acao=editar&userId=${user.id}"><img
+											href="CadastrarProduto?acao=editar&produtoId=${produto.id}"><img
 												src="resource/img/edit.png" width="30px" height="30px"
 												title="Editar"></a></td>
 									</tr>
@@ -166,8 +166,13 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	
+
+	<script src="javascript/index2.js"></script>
+	<script type="text/javascript">
+		const msg = "${error}"
+		if (!msg == '') {
+			alert(msg)
+		}
+	</script>
 </body>
 </html>

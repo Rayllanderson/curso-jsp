@@ -201,10 +201,10 @@
 		console.log(mensagem);
 		if (!mensagem == '') {
 			alert(mensagem);
-		}
+		}	
 	</script>
 	
-	<script src="javascript/jquery.mask.js"></script>
+	
 
 </body>
 </html>

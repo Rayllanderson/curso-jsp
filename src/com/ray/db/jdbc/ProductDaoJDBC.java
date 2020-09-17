@@ -35,7 +35,7 @@ public class ProductDaoJDBC implements ProductRepository {
 		st.execute();
 		conn.commit();
 	    } else {
-		throw new ProdutoExistenteException("Não foi possível cadastrar. Produto já cadastrado!");
+		throw new ProdutoExistenteException("Não foi possível cadastrar. " + "Produto de nome " + product.getNome() + " já está cadastrado!");
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -122,7 +122,7 @@ public class ProductDaoJDBC implements ProductRepository {
 		if (name.equals(this.findById(product.getId()).getNome())) {
 		    name = this.findById(product.getId()).getNome();
 		} else {
-		    throw new ProdutoExistenteException("Produto já cadastrado!");
+		    throw new ProdutoExistenteException("Produto de nome " + product.getNome() + " já está cadastrado!");
 		}
 	    }
 	    st = conn.prepareStatement("update products set nome = ?, quantidade = ?, valor = ? where id = ?");

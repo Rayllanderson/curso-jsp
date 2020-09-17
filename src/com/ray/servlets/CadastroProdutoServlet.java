@@ -29,24 +29,31 @@ public class CadastroProdutoServlet extends HttpServlet {
 	this.repository = DaoFactory.createProdutoDao();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException {
 	String acao = request.getParameter("acao");
 	if (acao != null) {
-	    Long id = Long.valueOf(request.getParameter("userId"));
 	    if (acao.equals("listartodos")) {
 		listarTodos(request, response);
-	    }else if (acao.equals("deletar")) {
+	    } else if (acao.equals("delete")) {
+		Long id = Long.valueOf(request.getParameter("produtoId"));
 		repository.deleteById(id);
 		listarTodos(request, response);
-	    }else if (acao.equals("editar")) {
+	    } else if (acao.equals("editar")) {
+		Long id = Long.valueOf(request.getParameter("produtoId"));
 		Product p = repository.findById(id);
-		
-	    };
+		// entao esse cara ai, só vai servir pra ser colocado no layout lá
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastro-produto.jsp");
+		request.setAttribute("produto", p);
+		dispatcher.forward(request, response);
+	    }
+	    ;
 	}
 
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException {
 	String acao = request.getParameter("acao");
 	if (acao != null && acao.equals("reset")) {
 	    listarTodos(request, response);
@@ -77,9 +84,11 @@ public class CadastroProdutoServlet extends HttpServlet {
 		repository.update(p);
 	    }
 	} catch (NumberFormatException e) {
-
+	    request.setAttribute("produto", p);
+	    request.setAttribute("error", "Utilize Ponto ( . ) no lugar da Vírgula ( , )");
 	} catch (ProdutoExistenteException e) {
-	    request.setAttribute("error", "Produto de nome " + p.getNome() + " já está cadastrado");
+	    request.setAttribute("produto", p);
+	    request.setAttribute("error", e.getMessage());
 	}
     }
 
