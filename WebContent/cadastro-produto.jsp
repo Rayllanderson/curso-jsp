@@ -53,6 +53,20 @@
 								<h11>*</h11>
 								Campo Obrigatório
 							</p>
+
+							<div style="display: flex; margin-right: 105%;">
+								<div>
+									<a href="acesso-liberado.jsp" style="margin-top: -5px">Inicio</a>
+								</div>
+
+								<div>
+									<a href="index.jsp"
+										style="margin-left: 10px; margin-right: 105%; margin-top: -5px">Sair</a>
+								</div>
+							</div>
+
+
+
 						</div>
 					</div>
 

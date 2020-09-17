@@ -49,6 +49,18 @@
 								<h11>*</h11>
 								Campo Obrigatório
 							</p>
+							<div style=" display: flex; margin-right: 105%;">
+								<div>
+									<a href="acesso-liberado.jsp"
+										style=" margin-top: -5px">Inicio</a>
+								</div>
+
+								<div>
+									<a href="index.jsp"
+										style="margin-left: 10px; margin-right: 105%; margin-top: -5px">Sair</a>
+								</div>
+							</div>
+
 						</div>
 					</div>
 
@@ -86,9 +98,9 @@
 
 
 					</div>
-					
-					
-				
+
+
+
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Nome">Password
@@ -109,8 +121,9 @@
 						</label>
 						<div class="col-md-2">
 							<input id="telefone" name="telefone"
-								class="form-control input-md" required type="text"  data-mask="(00) 00000-0000" data-mask-selectonfocus="true"
-								style="width: 100%;" value="${user.telefone}" >
+								class="form-control input-md" required type="text"
+								data-mask="(00) 00000-0000" data-mask-selectonfocus="true"
+								style="width: 100%;" value="${user.telefone}">
 						</div>
 					</div>
 
@@ -201,10 +214,10 @@
 		console.log(mensagem);
 		if (!mensagem == '') {
 			alert(mensagem);
-		}	
+		}
 	</script>
-	
-	
+
+	<script src="javascript/jquery.mask.js"></script>
 
 </body>
 </html>
