@@ -8,6 +8,15 @@ public class User {
     private String password;
     private String email;
     private String telefone;
+    private Foto foto;
+
+    public Foto getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Foto foto) {
+        this.foto = foto;
+    }
 
     public User(Long id, String name, String username, String password, String email, String telefone) {
 	this.id = id;
@@ -24,6 +33,16 @@ public class User {
 	this.password = password;
 	this.email = email;
 	this.telefone = string;
+    }
+    
+    public User(Long id, String name, String username, String password, String email, String telefone, Foto foto) {
+	this.id = id;
+	this.name = name;
+	this.username = username;
+	this.password = password;
+	this.email = email;
+	this.telefone = telefone;
+	this.foto = foto;
     }
 
     public User() {

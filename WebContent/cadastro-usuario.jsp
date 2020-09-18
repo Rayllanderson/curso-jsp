@@ -105,7 +105,7 @@
 <body>
 
 	<form class="form-horizontal" action="CadastrarUser" method="post"
-		id="formUser">
+		id="formUser" enctype="multipart/form-data">
 		<fieldset>
 			<div class="panel panel-primary">
 				<div class="panel-heading">Cadastro de Cliente</div>
@@ -137,129 +137,102 @@
 
 
 						<div class="form-group">
-						<label class="col-md-2 control-label" for="Nome">ID</label>
-						<div class="col-md-8">
-							<input id="id" name="id" class="form-control input-md"
-								type="text" style="width: 23.3%" value="${user.id}"
-								readonly="readonly">
-						</div>
-					</div>
-
-					<!-- NOME-->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
-						<div class="col-md-8">
-							<input id="name" name="name" class="form-control input-md"
-								required type="text" style="width: 23.3%" value="${user.name}">
+							<label class="col-md-2 control-label" for="Nome">ID</label>
+							<div class="col-md-8">
+								<input id="id" name="id" class="form-control input-md"
+									type="text" style="width: 23.3%" value="${user.id}"
+									readonly="readonly">
+							</div>
 						</div>
 
+						<!-- NOME-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
+							<div class="col-md-8">
+								<input id="name" name="name" class="form-control input-md"
+									required type="text" style="width: 23.3%" value="${user.name}">
+							</div>
 
 
 
-					</div>
 
-
-					<!-- USERNAME-->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Nome">Username
-							<h11>*</h11>
-						</label>
-						<div class="col-md-2">
-							<input id="username" name="username"
-								class="form-control input-md" required type="text"
-								style="width: 100%;" value="${user.username}">
 						</div>
 
-					</div>
 
+						<!-- USERNAME-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="Nome">Username
+								<h11>*</h11>
+							</label>
+							<div class="col-md-2">
+								<input id="username" name="username"
+									class="form-control input-md" required type="text"
+									style="width: 100%;" value="${user.username}">
+							</div>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Nome">Password
-							<h11>*</h11>
-						</label>
-						<div class="col-md-2">
-							<input id="password" name="password"
-								class="form-control input-md" required="" type="password"
-								style="width: 100%;" value="${user.password}">
 						</div>
-					</div>
 
 
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="telefone">Telefone
-							<h11>*</h11>
-						</label>
-						<div class="col-md-2">
-							<input id="telefone" name="telefone"
-								class="form-control input-md" required type="text"
-								data-mask="(00) 00000-0000" data-mask-selectonfocus="true"
-								style="width: 100%;" value="${user.telefone}">
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="Nome">Password
+								<h11>*</h11>
+							</label>
+							<div class="col-md-2">
+								<input id="password" name="password"
+									class="form-control input-md" required="" type="password"
+									style="width: 100%;" value="${user.password}">
+							</div>
 						</div>
-					</div>
+
+
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="telefone">Telefone
+								<h11>*</h11>
+							</label>
+							<div class="col-md-2">
+								<input id="telefone" name="telefone"
+									class="form-control input-md" required type="text"
+									data-mask="(00) 00000-0000" data-mask-selectonfocus="true"
+									style="width: 100%;" value="${user.telefone}">
+							</div>
+						</div>
 
 
 
 
-					<!-- Prepended text-->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="prependedtext">Email
-							<h11>*</h11>
-						</label>
-						<div class="col-md-5">
-							<div class="input-group">
-								<span class="input-group-addon"><i
-									class="glyphicon glyphicon-envelope"></i></span> <input id="email"
-									name="email" class="form-control" placeholder="email@email.com"
-									required="" type="text"
-									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-									style="width: 34%;" value="${user.email}">
+						<!-- Prepended text-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="prependedtext">Email
+								<h11>*</h11>
+							</label>
+							<div class="col-md-5">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-envelope"></i></span> <input id="email"
+										name="email" class="form-control"
+										placeholder="email@email.com" required="" type="text"
+										pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+										style="width: 34%;" value="${user.email}">
+								</div>
+							</div>
+						</div>
+	
+						<input type="file" id="foto" name="foto" value="foto">
+
+
+						<!-- Button (Double) -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="Cadastrar"></label>
+							<div class="col-md-8">
+								<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
+									type="Submit">Salvar</button>
+								<button id="Cancelar" name="Cancelar" class="btn btn-danger"
+									onclick=onclick=history.go(-1)>Cancelar</button>
 							</div>
 						</div>
 					</div>
-
-
-
-					<!-- Button (Double) -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Cadastrar"></label>
-						<div class="col-md-8">
-							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
-								type="Submit">Salvar</button>
-							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-								onclick=onclick=history.go(-1)>Cancelar</button>
-						</div>
-					</div>
-
-
-					<div class="col-md-8">
-						<div>
-							<input class="form-control input-md" type="text" name="cep" id="cep"
-								style="width: 23.3%; margin-left: 60%; margin-top: -27.6%;"
-								placeholder="CEP">
-								
-								<input class="form-control input-md" type="text" name="rua" id="rua"
-								style="width: 23.3%; margin-left: 60%; margin-top: 27px;"
-								placeholder="Rua">
-								
-																<input class="form-control input-md" type="text" name="bairro" id="bairro"
-								style="width: 23.3%; margin-left: 60%; margin-top: 25px;"
-								placeholder="Bairro">
-								
-								<input class="form-control input-md" type="text" name="cidade" id="cidade"
-								style="width: 23.3%; margin-left: 60%; margin-top: 25px;"
-								placeholder="Cidade">
-								<input class="form-control input-md" type="text" name="uf" id="uf"
-								style="width: 23.3%; margin-left: 60%; margin-top: 25px;"
-								placeholder="Estado">
-								
-						</div>
-
-					</div>
-
 				</div>
-
-
 			</div>
 		</fieldset>
 
@@ -280,10 +253,12 @@
 									<th class="cell100 column3">Telefone</th>
 									<th class="cell100 column4">Excluir</th>
 									<th class="cell100 column5">Editar</th>
+									<th class="cell100 column5">Telefones</th>
 								</tr>
 							</thead>
 						</table>
 					</div>
+
 
 					<div class="table100-body js-pscroll" style="margin-top: 0px;">
 						<c:forEach items="${usuarios}" var="user">
@@ -303,6 +278,8 @@
 											href="CadastrarUser?acao=editar&userId=${user.id}"><img
 												src="resource/img/edit.png" width="30px" height="30px"
 												title="Editar"></a></td>
+												
+												<td>ola</td>
 									</tr>
 								</tbody>
 							</table>

@@ -1,14 +1,22 @@
 package com.ray.servlets;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.codec.binary.Base64;
+
+import com.ray.beans.Foto;
 import com.ray.beans.User;
 import com.ray.db.jdbc.UsernameExistenteException;
 import com.ray.repository.DaoFactory;
@@ -18,6 +26,7 @@ import com.ray.repository.UserRepository;
  * Servlet implementation class CadastroUserServlet
  */
 @WebServlet("/CadastrarUser")
+@MultipartConfig
 public class CadastroUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -69,17 +78,19 @@ public class CadastroUserServlet extends HttpServlet {
 	String telefone = request.getParameter("telefone");
 	System.out.println(name + username + password + email);
 	System.out.println(telefone);
+
 	// id é diferente de vazio ? seta id, : (senao) null
 	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email, telefone);
 	try {
 	    if (user.getId() == null) {
+		uploadImage(request, user);
 		repository.save(user);
 	    } else {
 		repository.update(user);
 	    }
 	} catch (UsernameExistenteException e) {
 	    request.setAttribute("user", user);
-	    request.setAttribute("msg", e.getMessage());  
+	    request.setAttribute("msg", e.getMessage());
 	}
     }
 
@@ -88,6 +99,33 @@ public class CadastroUserServlet extends HttpServlet {
 	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
 	request.setAttribute("usuarios", repository.findAll());
 	dispatcher.forward(request, response);
+    }
+
+    private void uploadImage(HttpServletRequest request, User user) {
+	try {
+	    /* file upload */
+	    if (ServletFileUpload.isMultipartContent(request)) {// validando de form é de upload
+		Part imagem = request.getPart("foto");
+		new Base64();
+		String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
+		Foto foto = new Foto(fotoBase64, imagem.getContentType());
+		System.out.println(fotoBase64);
+		user.setFoto(foto);
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+
+    // converte a entrada de fluxo de dados para um array de byte
+    private byte[] streamToByte(InputStream imagem) throws IOException {
+	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	int reads = imagem.read();
+	while (reads != -1) {
+	    baos.write(reads);
+	    reads = imagem.read();
+	}
+	return baos.toByteArray();
     }
 
 }

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ray.beans.Foto;
 import com.ray.beans.User;
 import com.ray.db.DB;
 import com.ray.db.DbException;
@@ -48,7 +49,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public void save(User user) throws UsernameExistenteException {
-	String sql = "INSERT INTO users(username, password, name, telefone, email) VALUES (?, ?, ?, ?, ?)";
+	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
 	    if (!this.usernameExistente(user.getUsername())) {
@@ -58,6 +59,8 @@ public class UserDaoJDBC implements UserRepository {
 		st.setString(3, user.getName());
 		st.setString(4, user.getTelefone());
 		st.setString(5, user.getEmail());
+		st.setString(6, user.getFoto().getFotoBase64());
+		st.setString(7, user.getFoto().getContentType());
 		st.execute();
 		conn.commit();
 	    } else {
@@ -103,7 +106,9 @@ public class UserDaoJDBC implements UserRepository {
 	String username = rs.getString("username");
 	String telefone = rs.getString("telefone");
 	String email = rs.getString("email");
-	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone);
+	String foto64 = rs.getString("foto_base64");
+	String contentType = rs.getString("foto_content_type");
+	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone, new Foto(foto64, contentType));
     }
 
     @Override
