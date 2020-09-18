@@ -167,8 +167,7 @@ public class UserDaoJDBC implements UserRepository {
 	    st.setString(5, user.getTelefone());
 	    st.setString(6, user.getFoto().getFotoBase64());
 	    st.setString(7, user.getFoto().getContentType());
-	    st.setLong(8, user.getId());
-	    
+	    st.setLong(8, user.getId()); 
 	    st.executeUpdate();
 	    conn.commit();
 	    

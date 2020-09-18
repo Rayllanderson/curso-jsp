@@ -217,7 +217,7 @@
 								</div>
 							</div>
 						</div>
-	
+
 						<input type="file" id="foto" name="foto" value="foto">
 
 
@@ -247,27 +247,28 @@
 					<div class="table100-head">
 						<table>
 							<thead>
-								<tr class="row100 head">
+								<tr class="row100 head" style="margin-left: 10px;">
 									<th class="cell100 column1">Nome</th>
-									<th class="cell100 column2">Username</th>
+									<th class="cell100 column2">Perfil</th>
 									<th class="cell100 column3">Telefone</th>
 									<th class="cell100 column4">Excluir</th>
 									<th class="cell100 column5">Editar</th>
-									<th class="cell100 column5">Telefones</th>
 								</tr>
 							</thead>
 						</table>
 					</div>
 
 
-					<div class="table100-body js-pscroll" style="margin-top: 0px;">
+					<div class="table100-body js-pscroll"">
 						<c:forEach items="${usuarios}" var="user">
 							<table>
 								<tbody>
 									<tr class="row100 body">
-										<td class="cell100 column1"><c:out value="${user.name}"></c:out></td>
-										<td class="cell100 column2"><c:out
-												value="${user.username}"></c:out></td>
+										<td class="cell100 column1" style="margin-left: 10px;"><c:out
+												value="${user.name}"></c:out></td>
+										<td><a href="CadastrarUser?acao=download&userId=${user.id}"><img
+											src='<c:out value="${user.getTempFoto()}"/>'
+											alt="Imagem de perfil" width="30px" height="30px"></a></td>
 										<td class="cell100 column3"><c:out
 												value="${user.telefone}"></c:out></td>
 										<td class="cell100 column4"><a
@@ -278,12 +279,6 @@
 											href="CadastrarUser?acao=editar&userId=${user.id}"><img
 												src="resource/img/edit.png" width="30px" height="30px"
 												title="Editar"></a></td>
-												
-												<td> 
-												<img
-												src='<c:out value="${user.getTempFoto()}"/>' alt="Imagem de perfil" width="30px" height="30px">
-												
-												</td>
 									</tr>
 								</tbody>
 							</table>

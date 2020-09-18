@@ -1,8 +1,10 @@
 package com.ray.servlets;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -53,6 +55,30 @@ public class CadastroUserServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	    } else if (acao.equals("listartodos")) {
 		listarTodos(request, response);
+		
+	    }else if(acao.equals("download")) {
+		Long id = Long.valueOf(request.getParameter("userId"));
+		User user = repository.findById(id);
+		if(user != null) {
+		    /*onde diabos eu vou saber fazer disso*/
+		    String [] imgType = user.getFoto().getContentType().split("/");
+		    response.setHeader("Content-Disposition", "attachment;filename=arquivo." + imgType[1]);
+		    //converte a base64 da img do BD para byte
+		    byte[] imgBytes = Base64.decodeBase64(user.getFoto().getFotoBase64());
+		    //coloca os bytes em um objeto de entrada pra processar
+		    InputStream inputStream = new ByteArrayInputStream(imgBytes);
+		    
+		    //inicio da resposta pro navegador
+		    int read = 0;
+		    byte [] bytes = new byte [1024];
+		    OutputStream outputStream = response.getOutputStream();
+		    
+		    while((read = inputStream.read(bytes)) != -1) {
+			outputStream.write(bytes, 0, read);
+		    }
+		    outputStream.flush();
+		    outputStream.close();   
+		}
 	    }
 	}
     }
@@ -126,6 +152,7 @@ public class CadastroUserServlet extends HttpServlet {
 	    reads = imagem.read();
 	}
 	return baos.toByteArray();
+	
     }
 
 }
