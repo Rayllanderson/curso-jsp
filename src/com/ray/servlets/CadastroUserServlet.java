@@ -81,9 +81,9 @@ public class CadastroUserServlet extends HttpServlet {
 
 	// id é diferente de vazio ? seta id, : (senao) null
 	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email, telefone);
+	uploadImage(request, user);
 	try {
 	    if (user.getId() == null) {
-		uploadImage(request, user);
 		repository.save(user);
 	    } else {
 		repository.update(user);

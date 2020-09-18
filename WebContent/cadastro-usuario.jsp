@@ -279,7 +279,11 @@
 												src="resource/img/edit.png" width="30px" height="30px"
 												title="Editar"></a></td>
 												
-												<td>ola</td>
+												<td> 
+												<img
+												src='<c:out value="${user.getTempFoto()}"/>' alt="Imagem de perfil" width="30px" height="30px">
+												
+												</td>
 									</tr>
 								</tbody>
 							</table>

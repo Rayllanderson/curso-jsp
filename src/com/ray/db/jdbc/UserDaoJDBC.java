@@ -159,13 +159,16 @@ public class UserDaoJDBC implements UserRepository {
 		}
 	    }
 	    st = conn.prepareStatement(
-		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ? where id = ?");
+		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ?, foto_base64 = ?, foto_content_type = ? where id = ?");
 	    st.setString(1, user.getName());
 	    st.setString(2, username);
 	    st.setString(3, user.getPassword());
 	    st.setString(4, user.getEmail());
 	    st.setString(5, user.getTelefone());
-	    st.setLong(6, user.getId());
+	    st.setString(6, user.getFoto().getFotoBase64());
+	    st.setString(7, user.getFoto().getContentType());
+	    st.setLong(8, user.getId());
+	    
 	    st.executeUpdate();
 	    conn.commit();
 	    
