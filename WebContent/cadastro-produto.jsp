@@ -122,7 +122,7 @@
 							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 								type="Submit">Salvar</button>
 							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-								onclick="document.getElementById('formUser').action = 'CadastrarProduto?acao=reset'">Cancelar</button>
+								onclick=onclick= onclick=history.go(-1)>Cancelar</button>
 						</div>
 					</div>
 

@@ -32,7 +32,75 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 
+<!-- Adicionando JQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
 
+<script>
+	$(document).ready(
+			function() {
+				function limpa_formulário_cep() {
+					// Limpa valores do formulário de cep.
+					$("#rua").val("");
+					$("#bairro").val("");
+					$("#cidade").val("");
+					$("#uf").val("");
+				}
+				//Quando o campo cep perde o foco.
+				$("#cep").blur(
+						function() {
+
+							//Nova variável "cep" somente com dígitos.
+							var cep = $(this).val().replace(/\D/g, '');
+
+							//Verifica se campo cep possui valor informado.
+							if (cep != "") {
+
+								//Expressão regular para validar o CEP.
+								var validacep = /^[0-9]{8}$/;
+
+								//Valida o formato do CEP.
+								if (validacep.test(cep)) {
+
+									//Preenche os campos com "..." enquanto consulta webservice.
+									$("#rua").val("...");
+									$("#bairro").val("...");
+									$("#cidade").val("...");
+									$("#uf").val("...");
+
+									//Consulta o webservice viacep.com.br/
+									$.getJSON("https://viacep.com.br/ws/" + cep
+											+ "/json/?callback=?", function(
+											dados) {
+
+										if (!("erro" in dados)) {
+											//Atualiza os campos com os valores da consulta.
+											$("#rua").val(dados.logradouro);
+											$("#bairro").val(dados.bairro);
+											$("#cidade").val(dados.localidade);
+											$("#uf").val(dados.uf);
+										} //end if.
+										else {
+											//CEP pesquisado não foi encontrado.
+											limpa_formulário_cep();
+											alert("CEP não encontrado.");
+										}
+									});
+								} //end if.
+								else {
+									//cep é inválido.
+									limpa_formulário_cep();
+									alert("Formato de CEP inválido.");
+								}
+							} //end if.
+							else {
+								//cep sem valor, limpa formulário.
+								limpa_formulário_cep();
+							}
+						});
+			});
+</script>
 </head>
 <body>
 
@@ -49,10 +117,9 @@
 								<h11>*</h11>
 								Campo Obrigatório
 							</p>
-							<div style=" display: flex; margin-right: 105%;">
+							<div style="display: flex; margin-right: 105%;">
 								<div>
-									<a href="acesso-liberado.jsp"
-										style=" margin-top: -5px">Inicio</a>
+									<a href="acesso-liberado.jsp" style="margin-top: -5px">Inicio</a>
 								</div>
 
 								<div>
@@ -65,6 +132,11 @@
 					</div>
 
 					<div class="form-group">
+
+
+
+
+						<div class="form-group">
 						<label class="col-md-2 control-label" for="Nome">ID</label>
 						<div class="col-md-8">
 							<input id="id" name="id" class="form-control input-md"
@@ -78,11 +150,13 @@
 						<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
 						<div class="col-md-8">
 							<input id="name" name="name" class="form-control input-md"
-								required="" type="text" style="width: 23.3%"
-								value="${user.name}">
+								required type="text" style="width: 23.3%" value="${user.name}">
 						</div>
-					</div>
 
+
+
+
+					</div>
 
 
 					<!-- USERNAME-->
@@ -92,14 +166,11 @@
 						</label>
 						<div class="col-md-2">
 							<input id="username" name="username"
-								class="form-control input-md" required="" type="text"
+								class="form-control input-md" required type="text"
 								style="width: 100%;" value="${user.username}">
 						</div>
 
-
 					</div>
-
-
 
 
 					<div class="form-group">
@@ -128,6 +199,8 @@
 					</div>
 
 
+
+
 					<!-- Prepended text-->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="prependedtext">Email
@@ -145,6 +218,8 @@
 						</div>
 					</div>
 
+
+
 					<!-- Button (Double) -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Cadastrar"></label>
@@ -152,13 +227,43 @@
 							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 								type="Submit">Salvar</button>
 							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-								onclick="document.getElementById('formUser').action = 'CadastrarUser?acao=reset'">Cancelar</button>
+								onclick=onclick=history.go(-1)>Cancelar</button>
 						</div>
 					</div>
 
+
+					<div class="col-md-8">
+						<div>
+							<input class="form-control input-md" type="text" name="cep" id="cep"
+								style="width: 23.3%; margin-left: 60%; margin-top: -27.6%;"
+								placeholder="CEP">
+								
+								<input class="form-control input-md" type="text" name="rua" id="rua"
+								style="width: 23.3%; margin-left: 60%; margin-top: 27px;"
+								placeholder="Rua">
+								
+																<input class="form-control input-md" type="text" name="bairro" id="bairro"
+								style="width: 23.3%; margin-left: 60%; margin-top: 25px;"
+								placeholder="Bairro">
+								
+								<input class="form-control input-md" type="text" name="cidade" id="cidade"
+								style="width: 23.3%; margin-left: 60%; margin-top: 25px;"
+								placeholder="Cidade">
+								<input class="form-control input-md" type="text" name="uf" id="uf"
+								style="width: 23.3%; margin-left: 60%; margin-top: 25px;"
+								placeholder="Estado">
+								
+						</div>
+
+					</div>
+
 				</div>
+
+
 			</div>
 		</fieldset>
+
+
 	</form>
 
 
