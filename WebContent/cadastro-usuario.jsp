@@ -218,7 +218,10 @@
 							</div>
 						</div>
 
-						<input type="file" id="foto" name="foto" value="foto">
+						<p style="margin-left: 13%">Foto</p>
+						<input type="file" id="foto" name="foto" value="foto" size = "50" style="margin-left: 13%"/>
+						<p style="margin-left: 13%; margin-top: 10px;" >Curriculo</p>
+						<input type="file" id="curriculo" name="curriculo" value="curriculo" size = "50" style="margin-left: 13%; margin-bottom: 10px "/>
 
 
 						<!-- Button (Double) -->
@@ -266,9 +269,11 @@
 									<tr class="row100 body">
 										<td class="cell100 column1" style="margin-left: 10px;"><c:out
 												value="${user.name}"></c:out></td>
-										<td><a href="CadastrarUser?acao=download&userId=${user.id}"><img
+										<td><a href="CadastrarUser?acao=download&tipo=img&userId=${user.id}"><img
 											src='<c:out value="${user.getTempFoto()}"/>'
 											alt="Imagem de perfil" width="30px" height="30px"></a></td>
+											<td><a href="CadastrarUser?acao=download&tipo=curriculo&userId=${user.id}" alt="Curriculo" width="30px" height="30px">
+											Curriculo</a></td>
 										<td class="cell100 column3"><c:out
 												value="${user.telefone}"></c:out></td>
 										<td class="cell100 column4"><a

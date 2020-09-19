@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ray.beans.Foto;
+import com.ray.beans.Arquivo;
 import com.ray.beans.User;
 import com.ray.db.DB;
 import com.ray.db.DbException;
@@ -49,7 +49,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public void save(User user) throws UsernameExistenteException {
-	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type, curriculo_base64, curriculo_content_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
 	    if (!this.usernameExistente(user.getUsername())) {
@@ -59,8 +59,10 @@ public class UserDaoJDBC implements UserRepository {
 		st.setString(3, user.getName());
 		st.setString(4, user.getTelefone());
 		st.setString(5, user.getEmail());
-		st.setString(6, user.getFoto().getFotoBase64());
+		st.setString(6, user.getFoto().getArquivoBase64());
 		st.setString(7, user.getFoto().getContentType());
+		st.setString(8, user.getCurriculo().getArquivoBase64());
+		st.setString(9, user.getCurriculo().getContentType());
 		st.execute();
 		conn.commit();
 	    } else {
@@ -108,7 +110,10 @@ public class UserDaoJDBC implements UserRepository {
 	String email = rs.getString("email");
 	String foto64 = rs.getString("foto_base64");
 	String contentType = rs.getString("foto_content_type");
-	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone, new Foto(foto64, contentType));
+	String curriculo64 = rs.getString("curriculo_base64");
+	String curriculoCT = rs.getString("curriculo_content_type");
+	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone,
+		new Arquivo(foto64, contentType), new Arquivo(curriculo64, curriculoCT));
     }
 
     @Override
@@ -158,19 +163,27 @@ public class UserDaoJDBC implements UserRepository {
 		    throw new UsernameExistenteException("Username já existente!");
 		}
 	    }
+	    
+	    if (user.getFoto().getArquivoBase64().equals("") && findById(user.getId()).getFoto()!= null) {
+		user.setFoto(findById(user.getId()).getFoto());
+	    }
+	    
 	    st = conn.prepareStatement(
-		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ?, foto_base64 = ?, foto_content_type = ? where id = ?");
+		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ?, foto_base64 = ?, "
+			    + "foto_content_type = ?, curriculo_base64 = ?, curriculo_content_type = ? where id = ?");
 	    st.setString(1, user.getName());
 	    st.setString(2, username);
 	    st.setString(3, user.getPassword());
 	    st.setString(4, user.getEmail());
 	    st.setString(5, user.getTelefone());
-	    st.setString(6, user.getFoto().getFotoBase64());
+	    st.setString(6, user.getFoto().getArquivoBase64());
 	    st.setString(7, user.getFoto().getContentType());
-	    st.setLong(8, user.getId()); 
+	    st.setString(8, user.getCurriculo().getArquivoBase64());
+	    st.setString(9, user.getCurriculo().getContentType());
+	    st.setLong(10, user.getId());
 	    st.executeUpdate();
 	    conn.commit();
-	    
+
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    try {

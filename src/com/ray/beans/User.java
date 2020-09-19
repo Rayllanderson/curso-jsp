@@ -8,15 +8,8 @@ public class User {
     private String password;
     private String email;
     private String telefone;
-    private Foto foto;
-
-    public Foto getFoto() {
-        return foto;
-    }
-
-    public void setFoto(Foto foto) {
-        this.foto = foto;
-    }
+    private Arquivo foto;
+    private Arquivo curriculo;
 
     public User(Long id, String name, String username, String password, String email, String telefone) {
 	this.id = id;
@@ -35,7 +28,7 @@ public class User {
 	this.telefone = string;
     }
     
-    public User(Long id, String name, String username, String password, String email, String telefone, Foto foto) {
+    public User(Long id, String name, String username, String password, String email, String telefone, Arquivo foto, Arquivo curriculo) {
 	this.id = id;
 	this.name = name;
 	this.username = username;
@@ -43,10 +36,10 @@ public class User {
 	this.email = email;
 	this.telefone = telefone;
 	this.foto = foto;
+	this.curriculo = curriculo;
     }
 
     public User() {
-	// TODO Auto-generated constructor stub
     }
 
     public String getUsername() {
@@ -97,7 +90,27 @@ public class User {
 	this.name = name;
     }
     
+    public Arquivo getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Arquivo arquivo) {
+        this.foto = arquivo;
+    }
+    
+    public Arquivo getCurriculo() {
+        return curriculo;
+    }
+
+    public void setCurriculo(Arquivo curriculo) {
+        this.curriculo = curriculo;
+    }
+    
     public String getTempFoto() {
-	return "data:" + this.foto.getContentType() + ";base64," + this.foto.getFotoBase64();
+	return "data:" + this.foto.getContentType() + ";base64," + this.foto.getArquivoBase64();
+    }
+    
+    public String getTempCurriculo() {
+	return "data:" + this.curriculo.getContentType() + ";base64," + this.curriculo.getArquivoBase64();
     }
 }

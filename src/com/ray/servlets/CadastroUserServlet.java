@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import javax.servlet.http.Part;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import com.ray.beans.Foto;
+import com.ray.beans.Arquivo;
 import com.ray.beans.User;
 import com.ray.db.jdbc.UsernameExistenteException;
 import com.ray.repository.DaoFactory;
@@ -55,30 +56,14 @@ public class CadastroUserServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	    } else if (acao.equals("listartodos")) {
 		listarTodos(request, response);
-		
-	    }else if(acao.equals("download")) {
-		Long id = Long.valueOf(request.getParameter("userId"));
-		User user = repository.findById(id);
-		if(user != null) {
-		    /*onde diabos eu vou saber fazer disso*/
-		    String [] imgType = user.getFoto().getContentType().split("/");
-		    response.setHeader("Content-Disposition", "attachment;filename=arquivo." + imgType[1]);
-		    //converte a base64 da img do BD para byte
-		    byte[] imgBytes = Base64.decodeBase64(user.getFoto().getFotoBase64());
-		    //coloca os bytes em um objeto de entrada pra processar
-		    InputStream inputStream = new ByteArrayInputStream(imgBytes);
-		    
-		    //inicio da resposta pro navegador
-		    int read = 0;
-		    byte [] bytes = new byte [1024];
-		    OutputStream outputStream = response.getOutputStream();
-		    
-		    while((read = inputStream.read(bytes)) != -1) {
-			outputStream.write(bytes, 0, read);
-		    }
-		    outputStream.flush();
-		    outputStream.close();   
+	    } else if (acao.equals("download")) {
+		try {
+		    downloadFile(request, response);
+		} catch (PatternSyntaxException | NullPointerException e) {
+		    request.setAttribute("msg", "Arquivo não existente");
+		    listarTodos(request, response);
 		}
+
 	    }
 	}
     }
@@ -132,15 +117,27 @@ public class CadastroUserServlet extends HttpServlet {
 	    /* file upload */
 	    if (ServletFileUpload.isMultipartContent(request)) {// validando de form é de upload
 		Part imagem = request.getPart("foto");
-		new Base64();
-		String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
-		Foto foto = new Foto(fotoBase64, imagem.getContentType());
-		System.out.println(fotoBase64);
-		user.setFoto(foto);
+		if (imagem != null) {
+		    user.setFoto(processaArquivo(imagem));
+		} else {
+		    user.setFoto(new Arquivo(null, null));
+		}
+		Part curriculo = request.getPart("curriculo");
+		if (curriculo != null) {
+		    user.setCurriculo(processaArquivo(curriculo));
+		} else {
+		    user.setCurriculo(new Arquivo(null, null));
+		}
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
+    }
+
+    private Arquivo processaArquivo(Part imagem) throws IOException {
+	new Base64();
+	String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
+	return new Arquivo(fotoBase64, imagem.getContentType());
     }
 
     // converte a entrada de fluxo de dados para um array de byte
@@ -152,7 +149,38 @@ public class CadastroUserServlet extends HttpServlet {
 	    reads = imagem.read();
 	}
 	return baos.toByteArray();
-	
+    }
+
+    private void downloadFile(HttpServletRequest request, HttpServletResponse response)
+	    throws IOException, PatternSyntaxException, NullPointerException {
+	Long id = Long.valueOf(request.getParameter("userId"));
+	User user = repository.findById(id);
+	String type = request.getParameter("tipo");
+	if (user != null) {
+	    // converte a base64 da img do BD para byte
+	    byte[] fileBytes = null;
+	    String[] fileType = null;
+	    if (type.equals("img")) {
+		fileType = user.getFoto().getContentType().split("/");
+		fileBytes = Base64.decodeBase64(user.getFoto().getArquivoBase64());
+	    }
+	    if (type.equals("curriculo")) {
+		fileType = user.getCurriculo().getContentType().split("/");
+		fileBytes = Base64.decodeBase64(user.getCurriculo().getArquivoBase64());
+	    }
+	    response.setHeader("Content-Disposition", "attachment;filename=arquivo." + fileType[1]);
+	    // coloca os bytes em um objeto de entrada pra processar
+	    InputStream inputStream = new ByteArrayInputStream(fileBytes);
+	    // inicio da resposta pro navegador
+	    int read = 0;
+	    byte[] bytes = new byte[1024];
+	    OutputStream outputStream = response.getOutputStream();
+	    while ((read = inputStream.read(bytes)) != -1) {
+		outputStream.write(bytes, 0, read);
+	    }
+	    outputStream.flush();
+	    outputStream.close();
+	}
     }
 
 }
