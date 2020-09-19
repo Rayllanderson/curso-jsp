@@ -219,9 +219,12 @@
 						</div>
 
 						<p style="margin-left: 13%">Foto</p>
-						<input type="file" id="foto" name="foto" value="foto" size = "50" style="margin-left: 13%"/>
-						<p style="margin-left: 13%; margin-top: 10px;" >Curriculo</p>
-						<input type="file" id="curriculo" name="curriculo" value="curriculo" size = "50" style="margin-left: 13%; margin-bottom: 10px "/>
+						<input type="file" id="foto" name="foto" value="foto" size="50"
+							style="margin-left: 13%" />
+						<p style="margin-left: 13%; margin-top: 10px;">Curriculo</p>
+						<input type="file" id="curriculo" name="curriculo"
+							value="curriculo" size="50"
+							style="margin-left: 13%; margin-bottom: 10px" />
 
 
 						<!-- Button (Double) -->
@@ -231,7 +234,7 @@
 								<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 									type="Submit">Salvar</button>
 								<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-									onclick=cadastro-usuario.jsp>Cancelar</button>
+									onclick="cadastro-usuario.jsp">Cancelar</button>
 							</div>
 						</div>
 					</div>
@@ -269,11 +272,35 @@
 									<tr class="row100 body">
 										<td class="cell100 column1" style="margin-left: 10px;"><c:out
 												value="${user.name}"></c:out></td>
-										<td><a href="CadastrarUser?acao=download&tipo=img&userId=${user.id}"><img
-											src='<c:out value="${user.getTempFoto()}"/>'
-											alt="Imagem de perfil" width="30px" height="30px"></a></td>
-											<td><a href="CadastrarUser?acao=download&tipo=curriculo&userId=${user.id}" alt="Curriculo" width="30px" height="30px">
-											Curriculo</a></td>
+
+										<c:if test="${!user.miniatura.isEmpty()}">
+											<td><a
+												href="CadastrarUser?acao=download&tipo=img&userId=${user.id}"><img
+													src='<c:out value="${user.miniatura}"/>'
+													alt="Imagem de perfil" width="30px" height="30px"> </a></td>
+										</c:if>
+
+										<c:if test="${user.miniatura.isEmpty()}">
+											<td><img src="resource\img\User_icon_BLACK-01.png"
+												width="30px" height="30px" /></td>
+										</c:if>
+
+										<c:if
+											test="${!user.getCurriculo().getArquivoBase64().isEmpty()}">
+											<td><a
+												href="CadastrarUser?acao=download&tipo=curriculo&userId=${user.id}">
+													<img alt="" src="resource/img/unnamed.png"
+													title="Curriculo" width="30px" height="30px" />
+											</a></td>
+										</c:if>
+
+										<c:if
+											test="${user.getCurriculo().getArquivoBase64().isEmpty()}">
+											<td><a> <img alt="" src="resource/img/unnamed.png"
+													title="Curriculo" onclick="alert('Sem curriculo')"
+													width="30px" height="30px" /></a></td>
+										</c:if>
+
 										<td class="cell100 column3"><c:out
 												value="${user.telefone}"></c:out></td>
 										<td class="cell100 column4"><a
@@ -301,7 +328,8 @@
 		if (!mensagem == '') {
 			alert(mensagem);
 		}
-	</script>
+	
+</script>
 
 	<script src="javascript/jquery.mask.js"></script>
 

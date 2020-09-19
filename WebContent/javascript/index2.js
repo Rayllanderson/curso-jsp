@@ -19,6 +19,8 @@ setInputFilter(document.getElementById("valor"), function(value) {
 	return /^\d*\.?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
 });
 
+
+
 setInputFilter(document.getElementById("quantidade"), function(value) {
 	return /^[0-9]*$/.test(value);
 	});

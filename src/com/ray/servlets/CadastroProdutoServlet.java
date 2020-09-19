@@ -76,16 +76,13 @@ public class CadastroProdutoServlet extends HttpServlet {
 	try {
 	    String id = request.getParameter("id");
 	    Integer quantidade = Integer.parseInt(request.getParameter("quantidade"));
-	    BigDecimal valor = new BigDecimal(request.getParameter("valor"));
+	    BigDecimal valor = new BigDecimal(request.getParameter("valor").replace(",", "."));
 	    p = new Product(!id.isEmpty() ? Long.parseLong(id) : null, nome, quantidade, valor);
 	    if (p.getId() == null) {
 		repository.save(p);
 	    } else {
 		repository.update(p);
 	    }
-	} catch (NumberFormatException e) {
-	    request.setAttribute("produto", p);
-	    request.setAttribute("error", "Utilize Ponto ( . ) no lugar da Vírgula ( , )");
 	} catch (ProdutoExistenteException e) {
 	    request.setAttribute("produto", p);
 	    request.setAttribute("error", e.getMessage());

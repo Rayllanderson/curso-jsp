@@ -1,12 +1,14 @@
 package com.ray.servlets;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.regex.PatternSyntaxException;
-
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -92,7 +95,7 @@ public class CadastroUserServlet extends HttpServlet {
 
 	// id é diferente de vazio ? seta id, : (senao) null
 	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email, telefone);
-	uploadImage(request, user);
+	uploadArquivo(request, user);
 	try {
 	    if (user.getId() == null) {
 		repository.save(user);
@@ -112,16 +115,20 @@ public class CadastroUserServlet extends HttpServlet {
 	dispatcher.forward(request, response);
     }
 
-    private void uploadImage(HttpServletRequest request, User user) {
+    private void uploadArquivo(HttpServletRequest request, User user) {
 	try {
 	    /* file upload */
 	    if (ServletFileUpload.isMultipartContent(request)) {// validando de form é de upload
 		Part imagem = request.getPart("foto");
 		if (imagem != null) {
 		    user.setFoto(processaArquivo(imagem));
+
+		    createMiniature(user, imagem);
+
 		} else {
 		    user.setFoto(new Arquivo(null, null));
 		}
+
 		Part curriculo = request.getPart("curriculo");
 		if (curriculo != null) {
 		    user.setCurriculo(processaArquivo(curriculo));
@@ -180,6 +187,35 @@ public class CadastroUserServlet extends HttpServlet {
 	    }
 	    outputStream.flush();
 	    outputStream.close();
+	}
+    }
+
+    private void createMiniature(User usuario, Part imagemFoto) throws IOException {
+	/* Inicio miniatura imagem */
+	if (usuario.getMiniatura() != null) {
+	    String fotoBase64 = Base64.encodeBase64String(streamToByte(imagemFoto.getInputStream()));
+	    /* Transforma em um bufferedImage */
+	    byte[] imageByteDecode = Base64.decodeBase64(fotoBase64);
+	    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
+
+	    /* Pega o tipo da imagem */
+	    int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
+
+	    /* Cria imagem em miniatura */
+	    BufferedImage resizedImage = new BufferedImage(100, 100, type);
+	    Graphics2D g = resizedImage.createGraphics();
+	    g.drawImage(bufferedImage, 0, 0, 100, 100, null);
+	    g.dispose();
+
+	    /* Escrever imagem novamente */
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    ImageIO.write(resizedImage, "png", baos);
+
+	    String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+
+	    usuario.setMiniatura(miniaturaBase64);
+	}else {
+	    usuario.setMiniatura("");
 	}
     }
 

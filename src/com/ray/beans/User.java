@@ -9,6 +9,7 @@ public class User {
     private String email;
     private String telefone;
     private Arquivo foto;
+    private String miniatura;
     private Arquivo curriculo;
 
     public User(Long id, String name, String username, String password, String email, String telefone) {
@@ -28,7 +29,7 @@ public class User {
 	this.telefone = string;
     }
     
-    public User(Long id, String name, String username, String password, String email, String telefone, Arquivo foto, Arquivo curriculo) {
+    public User(Long id, String name, String username, String password, String email, String telefone, Arquivo foto, Arquivo curriculo, String miniatura) {
 	this.id = id;
 	this.name = name;
 	this.username = username;
@@ -37,6 +38,7 @@ public class User {
 	this.telefone = telefone;
 	this.foto = foto;
 	this.curriculo = curriculo;
+	this.miniatura = miniatura;
     }
 
     public User() {
@@ -112,5 +114,13 @@ public class User {
     
     public String getTempCurriculo() {
 	return "data:" + this.curriculo.getContentType() + ";base64," + this.curriculo.getArquivoBase64();
+    }
+
+    public String getMiniatura() {
+	return miniatura;
+    }
+
+    public void setMiniatura(String miniatura) {
+	this.miniatura = miniatura;
     }
 }

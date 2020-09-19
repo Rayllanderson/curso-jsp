@@ -49,7 +49,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public void save(User user) throws UsernameExistenteException {
-	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type, curriculo_base64, curriculo_content_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type, foto_miniatura, curriculo_base64, curriculo_content_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
 	    if (!this.usernameExistente(user.getUsername())) {
@@ -61,8 +61,9 @@ public class UserDaoJDBC implements UserRepository {
 		st.setString(5, user.getEmail());
 		st.setString(6, user.getFoto().getArquivoBase64());
 		st.setString(7, user.getFoto().getContentType());
-		st.setString(8, user.getCurriculo().getArquivoBase64());
-		st.setString(9, user.getCurriculo().getContentType());
+		st.setString(8, user.getMiniatura());
+		st.setString(9, user.getCurriculo().getArquivoBase64());
+		st.setString(10, user.getCurriculo().getContentType());
 		st.execute();
 		conn.commit();
 	    } else {
@@ -91,7 +92,14 @@ public class UserDaoJDBC implements UserRepository {
 	    st = conn.prepareStatement(sql);
 	    rs = st.executeQuery();
 	    while (rs.next()) {
-		list.add(instanciarUser(rs));
+		String name = rs.getString("name");
+		String username = rs.getString("username");
+		String telefone = rs.getString("telefone");
+		String email = rs.getString("email");
+		String curriculo64 = rs.getString("curriculo_base64");
+		String curriculoCT = rs.getString("curriculo_content_type");
+		list.add(new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone,
+			null, new Arquivo(curriculo64, curriculoCT), rs.getString("foto_miniatura")));
 	    }
 	    return list;
 	} catch (SQLException e) {
@@ -113,7 +121,7 @@ public class UserDaoJDBC implements UserRepository {
 	String curriculo64 = rs.getString("curriculo_base64");
 	String curriculoCT = rs.getString("curriculo_content_type");
 	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone,
-		new Arquivo(foto64, contentType), new Arquivo(curriculo64, curriculoCT));
+		new Arquivo(foto64, contentType), new Arquivo(curriculo64, curriculoCT), rs.getString("foto_miniatura"));
     }
 
     @Override
@@ -173,10 +181,14 @@ public class UserDaoJDBC implements UserRepository {
 		user.setCurriculo(findById(user.getId()).getCurriculo());
 	    }
 	    
+	    if (user.getMiniatura().equals("") && findById(user.getId()).getMiniatura()!= null) {
+		user.setMiniatura(findById(user.getId()).getMiniatura());
+	    }
+	    
 	    // o método deveria ser só isso, af
 	    st = conn.prepareStatement(
 		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ?, foto_base64 = ?, "
-			    + "foto_content_type = ?, curriculo_base64 = ?, curriculo_content_type = ? where id = ?");
+			    + "foto_content_type = ?, curriculo_base64 = ?, curriculo_content_type = ?, foto_miniatura = ? where id = ?");
 	    st.setString(1, user.getName());
 	    st.setString(2, username);
 	    st.setString(3, user.getPassword());
@@ -186,7 +198,8 @@ public class UserDaoJDBC implements UserRepository {
 	    st.setString(7, user.getFoto().getContentType());
 	    st.setString(8, user.getCurriculo().getArquivoBase64());
 	    st.setString(9, user.getCurriculo().getContentType());
-	    st.setLong(10, user.getId());
+	    st.setString(10, user.getMiniatura());
+	    st.setLong(11, user.getId());
 	    st.executeUpdate();
 	    conn.commit();
 
