@@ -155,6 +155,7 @@ public class UserDaoJDBC implements UserRepository {
 	PreparedStatement st = null;
 	String username = user.getUsername();
 	try {
+	    //tudo isso deveria ser feito no service, but whatever...
 	    if ((usernameExistente(user.getUsername()))) {
 		// Verificando se o username atual é igual ao username dele mesmo
 		if (username.equals(this.findById(user.getId()).getUsername())) {
@@ -168,6 +169,11 @@ public class UserDaoJDBC implements UserRepository {
 		user.setFoto(findById(user.getId()).getFoto());
 	    }
 	    
+	    if (user.getCurriculo().getArquivoBase64().equals("") && findById(user.getId()).getCurriculo()!= null) {
+		user.setCurriculo(findById(user.getId()).getCurriculo());
+	    }
+	    
+	    // o método deveria ser só isso, af
 	    st = conn.prepareStatement(
 		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ?, foto_base64 = ?, "
 			    + "foto_content_type = ?, curriculo_base64 = ?, curriculo_content_type = ? where id = ?");

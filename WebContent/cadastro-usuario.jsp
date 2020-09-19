@@ -231,7 +231,7 @@
 								<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 									type="Submit">Salvar</button>
 								<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-									onclick=onclick=history.go(-1)>Cancelar</button>
+									onclick=cadastro-usuario.jsp>Cancelar</button>
 							</div>
 						</div>
 					</div>
