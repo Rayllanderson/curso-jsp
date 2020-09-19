@@ -104,12 +104,11 @@
 </head>
 <body>
 
-	<form class="form-horizontal" action="CadastrarUser" method="post"
+	<form class="form-horizontal"  method="post" action="CadastrarUser" method="POST"
 		id="formUser" enctype="multipart/form-data">
 		<fieldset>
 			<div class="panel panel-primary">
 				<div class="panel-heading">Cadastro de Cliente</div>
-
 				<div class="panel-body">
 					<div class="form-group">
 						<div class="col-md-11 control-label">
@@ -218,7 +217,7 @@
 							</div>
 						</div>
 
-						<p style="margin-left: 13%">Foto</p>
+						<p style="margin-left: 13%">Foto do Perfil</p>
 						<input type="file" id="foto" name="foto" value="foto" size="50"
 							style="margin-left: 13%" />
 						<p style="margin-left: 13%; margin-top: 10px;">Curriculo</p>
@@ -234,7 +233,7 @@
 								<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 									type="Submit">Salvar</button>
 								<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-									onclick="cadastro-usuario.jsp">Cancelar</button>
+									onclick="document.getElementById('formUser').action = 'CadastrarUser?acao=reset'">Cancelar</button>
 							</div>
 						</div>
 					</div>

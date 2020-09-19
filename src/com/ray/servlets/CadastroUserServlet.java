@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.regex.PatternSyntaxException;
+
 import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -45,35 +46,32 @@ public class CadastroUserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	String acao = request.getParameter("acao");
-	if (acao != null) {
-	    if (acao.equals("delete")) {
-		Long id = Long.valueOf(request.getParameter("userId"));
-		repository.deleteById(id);
+	String acao = request.getParameter("acao") != null ? request.getParameter("acao") : "listartodos";
+	if (acao.equals("delete")) {
+	    Long id = Long.valueOf(request.getParameter("userId"));
+	    repository.deleteById(id);
+	    listarTodos(request, response);
+	} else if (acao.equals("editar")) {
+	    Long id = Long.valueOf(request.getParameter("userId"));
+	    User userc = repository.findById(id);
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
+	    request.setAttribute("user", userc);
+	    dispatcher.forward(request, response);
+	} else if (acao.equals("listartodos")) {
+	    listarTodos(request, response);
+	    return;
+	} else if (acao.equals("download")) {
+	    try {
+		downloadFile(request, response);
+	    } catch (PatternSyntaxException | NullPointerException e) {
+		request.setAttribute("msg", "Arquivo não existente");
 		listarTodos(request, response);
-	    } else if (acao.equals("editar")) {
-		Long id = Long.valueOf(request.getParameter("userId"));
-		User userc = repository.findById(id);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-		request.setAttribute("user", userc);
-		dispatcher.forward(request, response);
-	    } else if (acao.equals("listartodos")) {
-		listarTodos(request, response);
-	    } else if (acao.equals("download")) {
-		try {
-		    downloadFile(request, response);
-		} catch (PatternSyntaxException | NullPointerException e) {
-		    request.setAttribute("msg", "Arquivo não existente");
-		    listarTodos(request, response);
-		}
-
 	    }
 	}
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	doGet(request, response);
 	String acao = request.getParameter("acao");
 	if (acao != null && acao.equals("reset")) {
 	    listarTodos(request, response);
@@ -92,7 +90,6 @@ public class CadastroUserServlet extends HttpServlet {
 	String telefone = request.getParameter("telefone");
 	System.out.println(name + username + password + email);
 	System.out.println(telefone);
-
 	// id é diferente de vazio ? seta id, : (senao) null
 	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email, telefone);
 	uploadArquivo(request, user);
@@ -110,8 +107,8 @@ public class CadastroUserServlet extends HttpServlet {
 
     private void listarTodos(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
 	request.setAttribute("usuarios", repository.findAll());
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
 	dispatcher.forward(request, response);
     }
 
@@ -120,22 +117,22 @@ public class CadastroUserServlet extends HttpServlet {
 	    /* file upload */
 	    if (ServletFileUpload.isMultipartContent(request)) {// validando de form é de upload
 		Part imagem = request.getPart("foto");
-		if (imagem != null) {
+		if (imagem.getSize() > 0) {
 		    user.setFoto(processaArquivo(imagem));
-
 		    createMiniature(user, imagem);
-
 		} else {
-		    user.setFoto(new Arquivo(null, null));
+		    user.setFoto(new Arquivo("", ""));
+		    user.setMiniatura("");
 		}
 
 		Part curriculo = request.getPart("curriculo");
-		if (curriculo != null) {
+		if (curriculo.getSize() > 0) {
 		    user.setCurriculo(processaArquivo(curriculo));
 		} else {
-		    user.setCurriculo(new Arquivo(null, null));
+		    user.setCurriculo(new Arquivo("", ""));
 		}
 	    }
+
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -192,31 +189,28 @@ public class CadastroUserServlet extends HttpServlet {
 
     private void createMiniature(User usuario, Part imagemFoto) throws IOException {
 	/* Inicio miniatura imagem */
-	if (usuario.getMiniatura() != null) {
-	    String fotoBase64 = Base64.encodeBase64String(streamToByte(imagemFoto.getInputStream()));
-	    /* Transforma em um bufferedImage */
-	    byte[] imageByteDecode = Base64.decodeBase64(fotoBase64);
-	    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
+	String fotoBase64 = Base64.encodeBase64String(streamToByte(imagemFoto.getInputStream()));
+	/* Transforma em um bufferedImage */
+	byte[] imageByteDecode = Base64.decodeBase64(fotoBase64);
+	BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
 
-	    /* Pega o tipo da imagem */
-	    int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
+	/* Pega o tipo da imagem */
+	int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
 
-	    /* Cria imagem em miniatura */
-	    BufferedImage resizedImage = new BufferedImage(100, 100, type);
-	    Graphics2D g = resizedImage.createGraphics();
-	    g.drawImage(bufferedImage, 0, 0, 100, 100, null);
-	    g.dispose();
+	/* Cria imagem em miniatura */
+	BufferedImage resizedImage = new BufferedImage(100, 100, type);
+	Graphics2D g = resizedImage.createGraphics();
+	g.drawImage(bufferedImage, 0, 0, 100, 100, null);
+	g.dispose();
 
-	    /* Escrever imagem novamente */
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    ImageIO.write(resizedImage, "png", baos);
+	/* Escrever imagem novamente */
+	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	ImageIO.write(resizedImage, "png", baos);
 
-	    String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+	String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
 
-	    usuario.setMiniatura(miniaturaBase64);
-	}else {
-	    usuario.setMiniatura("");
-	}
+	usuario.setMiniatura(miniaturaBase64);
+
     }
 
 }

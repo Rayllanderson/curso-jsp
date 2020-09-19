@@ -31,25 +31,21 @@ public class CadastroProdutoServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	String acao = request.getParameter("acao");
-	if (acao != null) {
-	    if (acao.equals("listartodos")) {
-		listarTodos(request, response);
-	    } else if (acao.equals("delete")) {
-		Long id = Long.valueOf(request.getParameter("produtoId"));
-		repository.deleteById(id);
-		listarTodos(request, response);
-	    } else if (acao.equals("editar")) {
-		Long id = Long.valueOf(request.getParameter("produtoId"));
-		Product p = repository.findById(id);
-		// entao esse cara ai, só vai servir pra ser colocado no layout lá
-		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastro-produto.jsp");
-		request.setAttribute("produto", p);
-		dispatcher.forward(request, response);
-	    }
-	    ;
+	String acao = request.getParameter("acao") != null ? request.getParameter("acao") : "listartodos";
+	if (acao.equals("listartodos")) {
+	    listarTodos(request, response);
+	} else if (acao.equals("delete")) {
+	    Long id = Long.valueOf(request.getParameter("produtoId"));
+	    repository.deleteById(id);
+	    listarTodos(request, response);
+	} else if (acao.equals("editar")) {
+	    Long id = Long.valueOf(request.getParameter("produtoId"));
+	    Product p = repository.findById(id);
+	    // entao esse cara ai, só vai servir pra ser colocado no layout lá
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("cadastro-produto.jsp");
+	    request.setAttribute("produto", p);
+	    dispatcher.forward(request, response);
 	}
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

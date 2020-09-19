@@ -84,7 +84,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public List<User> findAll() {
-	String sql = "select * from users;";
+	String sql = "select * from users where username <> 'admin';";
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	List<User> list = new ArrayList<>();
@@ -126,7 +126,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public void deleteById(Long id) {
-	String sql = "delete from users where id = " + id;
+	String sql = "delete from users where id = " + id + " and username <> 'admin';";
 	PreparedStatement st = null;
 	try {
 	    st = conn.prepareStatement(sql);
@@ -140,7 +140,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public User findById(Long id) {
-	String sql = "select * from users where id = " + id;
+	String sql = "select * from users where id = " + id + " and username <> 'admin';";
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	try {
