@@ -1,5 +1,8 @@
+
+<%@page import="com.ray.beans.User"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <head>
 
@@ -104,8 +107,10 @@
 </head>
 <body>
 
-	<form class="form-horizontal"  method="post" action="CadastrarUser" method="POST"
-		id="formUser" enctype="multipart/form-data">
+
+
+	<form class="form-horizontal" method="post" action="CadastrarUser"
+		method="POST" id="formUser" enctype="multipart/form-data">
 		<fieldset>
 			<div class="panel panel-primary">
 				<div class="panel-heading">Cadastro de Cliente</div>
@@ -149,7 +154,8 @@
 							<label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>
 							<div class="col-md-8">
 								<input id="name" name="name" class="form-control input-md"
-									required type="text" style="width: 23.3%" value="${user.name}">
+									required type="text" style="width: 23.3%" maxlength="250"
+									value="${user.name}">
 							</div>
 
 
@@ -166,7 +172,7 @@
 							<div class="col-md-2">
 								<input id="username" name="username"
 									class="form-control input-md" required type="text"
-									style="width: 100%;" value="${user.username}">
+									style="width: 100%;" value="${user.username}" maxlength="50">
 							</div>
 
 						</div>
@@ -179,7 +185,7 @@
 							<div class="col-md-2">
 								<input id="password" name="password"
 									class="form-control input-md" required="" type="password"
-									style="width: 100%;" value="${user.password}">
+									style="width: 100%;" value="${user.password}" maxlength="100">
 							</div>
 						</div>
 
@@ -217,6 +223,23 @@
 							</div>
 						</div>
 
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="ativo">Ativo </label>
+							<div class="col-md-2">
+								<input id="ativo" name="ativo" class="form-control input-md"
+									type="checkbox" style="width: 10%"
+									<%User user = (User) request.getAttribute("user");
+if (user != null) {
+	if (user.isAtivo()) {
+		out.print(" ");
+		out.print("checked=\"checked\"");
+		out.print(" ");
+	}
+}%>>
+							</div>
+						</div>
+
 						<p style="margin-left: 13%">Foto do Perfil</p>
 						<input type="file" id="foto" name="foto" value="foto" size="50"
 							style="margin-left: 13%" />
@@ -242,6 +265,9 @@
 		</fieldset>
 
 
+
+
+
 	</form>
 
 
@@ -258,13 +284,14 @@
 									<th class="cell100 column3">Telefone</th>
 									<th class="cell100 column4">Excluir</th>
 									<th class="cell100 column5">Editar</th>
+									<th class="cell100 column5">Ativo</th>
 								</tr>
 							</thead>
 						</table>
 					</div>
 
 
-					<div class="table100-body js-pscroll"">
+					<div class="table100-body js-pscroll">
 						<c:forEach items="${usuarios}" var="user">
 							<table>
 								<tbody>
@@ -305,11 +332,22 @@
 										<td class="cell100 column4"><a
 											href="CadastrarUser?acao=delete&userId=${user.id}"><img
 												src="resource/img/excluir.png" width="30px" height="30px"
-												title="Excluir"></a></td>
+												title="Excluir"
+												onclick="return confirm('tem certeza que deseja excluir?')"></a></td>
 										<td class="cell100 column5"><a
 											href="CadastrarUser?acao=editar&userId=${user.id}"><img
 												src="resource/img/edit.png" width="30px" height="30px"
 												title="Editar"></a></td>
+										<td>
+											<div class="col-md-2">
+												<c:if test="${user.ativo}" >
+													<p>Sim</p>
+												</c:if>
+												<c:if test="${!user.ativo}" >
+													<p>Não</p>
+												</c:if>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -327,8 +365,7 @@
 		if (!mensagem == '') {
 			alert(mensagem);
 		}
-	
-</script>
+	</script>
 
 	<script src="javascript/jquery.mask.js"></script>
 

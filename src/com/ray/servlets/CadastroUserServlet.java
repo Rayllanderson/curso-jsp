@@ -93,6 +93,7 @@ public class CadastroUserServlet extends HttpServlet {
 	// id é diferente de vazio ? seta id, : (senao) null
 	User user = new User(!id.isEmpty() ? Long.parseLong(id) : null, name, username, password, email, telefone);
 	uploadArquivo(request, user);
+	setUserAtivo(request, user);
 	try {
 	    if (user.getId() == null) {
 		repository.save(user);
@@ -206,11 +207,17 @@ public class CadastroUserServlet extends HttpServlet {
 	/* Escrever imagem novamente */
 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	ImageIO.write(resizedImage, "png", baos);
-
 	String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
-
 	usuario.setMiniatura(miniaturaBase64);
-
+    }
+    
+    private void setUserAtivo(HttpServletRequest request, User user) {
+	String ativo = request.getParameter("ativo");
+	if (ativo != null && ativo.equals("on")) {
+	    user.setAtivo(true);
+	}else {
+	    user.setAtivo(false);
+	}
     }
 
 }

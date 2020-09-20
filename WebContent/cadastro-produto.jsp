@@ -85,7 +85,7 @@
 						<div class="col-md-8">
 							<input id="nome" name="nome" class="form-control input-md"
 								required type="text" style="width: 23.3%"
-								value="${produto.nome}">
+								value="${produto.nome}" maxlength="100">
 						</div>
 					</div>
 
@@ -98,7 +98,7 @@
 						<div class="col-md-2">
 							<input id="quantidade" name="quantidade"
 								class="form-control input-md" required type="text"
-								style="width: 100%;" value="${produto.quantidade}">
+								style="width: 100%;" value="${produto.quantidade}" maxlength="7">
 						</div>
 					</div>
 
@@ -109,7 +109,7 @@
 						</label>
 						<div class="col-md-2">
 							<input id="valor" name="valor" class="form-control input-md"
-								required type="text" style="width: 100%;"
+								required type="text" style="width: 100%;" maxlength="10"
 								value="${produto.valor}">
 						</div>
 					</div>
@@ -165,7 +165,7 @@
 												value="${produto.valor}"></c:out></td>
 										<td class="cell100 column4"><a
 											href="CadastrarProduto?acao=delete&produtoId=${produto.id}"><img
-												src="resource/img/excluir.png" width="30px" height="30px"
+												src="resource/img/excluir.png" onclick="return confirm('tem certeza que deseja excluir?')" width="30px" height="30px"
 												title="Excluir"></a></td>
 										<td class="cell100 column5"><a
 											href="CadastrarProduto?acao=editar&produtoId=${produto.id}"><img

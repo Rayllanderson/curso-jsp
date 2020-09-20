@@ -49,7 +49,7 @@ public class UserDaoJDBC implements UserRepository {
 
     @Override
     public void save(User user) throws UsernameExistenteException {
-	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type, foto_miniatura, curriculo_base64, curriculo_content_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	String sql = "INSERT INTO users(username, password, name, telefone, email, foto_base64, foto_content_type, foto_miniatura, curriculo_base64, curriculo_content_type, ativo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
 	    if (!this.usernameExistente(user.getUsername())) {
@@ -64,6 +64,7 @@ public class UserDaoJDBC implements UserRepository {
 		st.setString(8, user.getMiniatura());
 		st.setString(9, user.getCurriculo().getArquivoBase64());
 		st.setString(10, user.getCurriculo().getContentType());
+		st.setBoolean(11, user.isAtivo());
 		st.execute();
 		conn.commit();
 	    } else {
@@ -99,7 +100,7 @@ public class UserDaoJDBC implements UserRepository {
 		String curriculo64 = rs.getString("curriculo_base64");
 		String curriculoCT = rs.getString("curriculo_content_type");
 		list.add(new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone,
-			null, new Arquivo(curriculo64, curriculoCT), rs.getString("foto_miniatura")));
+			null, new Arquivo(curriculo64, curriculoCT), rs.getString("foto_miniatura"), rs.getBoolean("ativo")));
 	    }
 	    return list;
 	} catch (SQLException e) {
@@ -121,7 +122,7 @@ public class UserDaoJDBC implements UserRepository {
 	String curriculo64 = rs.getString("curriculo_base64");
 	String curriculoCT = rs.getString("curriculo_content_type");
 	return new User(rs.getLong("id"), name, username, rs.getString("password"), email, telefone,
-		new Arquivo(foto64, contentType), new Arquivo(curriculo64, curriculoCT), rs.getString("foto_miniatura"));
+		new Arquivo(foto64, contentType), new Arquivo(curriculo64, curriculoCT), rs.getString("foto_miniatura"), rs.getBoolean("ativo"));
     }
 
     @Override
@@ -188,7 +189,7 @@ public class UserDaoJDBC implements UserRepository {
 	    // o método deveria ser só isso, af
 	    st = conn.prepareStatement(
 		    "update users set name = ?, username = ?, password = ?, email = ?, telefone = ?, foto_base64 = ?, "
-			    + "foto_content_type = ?, curriculo_base64 = ?, curriculo_content_type = ?, foto_miniatura = ? where id = ?");
+			    + "foto_content_type = ?, curriculo_base64 = ?, curriculo_content_type = ?, foto_miniatura = ?, ativo = ? where id = ?");
 	    st.setString(1, user.getName());
 	    st.setString(2, username);
 	    st.setString(3, user.getPassword());
@@ -199,7 +200,8 @@ public class UserDaoJDBC implements UserRepository {
 	    st.setString(8, user.getCurriculo().getArquivoBase64());
 	    st.setString(9, user.getCurriculo().getContentType());
 	    st.setString(10, user.getMiniatura());
-	    st.setLong(11, user.getId());
+	    st.setBoolean(11, user.isAtivo());
+	    st.setLong(12, user.getId());
 	    st.executeUpdate();
 	    conn.commit();
 

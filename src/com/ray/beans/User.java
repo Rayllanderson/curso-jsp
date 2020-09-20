@@ -11,6 +11,7 @@ public class User {
     private Arquivo foto;
     private String miniatura;
     private Arquivo curriculo;
+    private boolean ativo;
 
     public User(Long id, String name, String username, String password, String email, String telefone) {
 	this.id = id;
@@ -29,7 +30,7 @@ public class User {
 	this.telefone = string;
     }
     
-    public User(Long id, String name, String username, String password, String email, String telefone, Arquivo foto, Arquivo curriculo, String miniatura) {
+    public User(Long id, String name, String username, String password, String email, String telefone, Arquivo foto, Arquivo curriculo, String miniatura, boolean ativo) {
 	this.id = id;
 	this.name = name;
 	this.username = username;
@@ -39,6 +40,7 @@ public class User {
 	this.foto = foto;
 	this.curriculo = curriculo;
 	this.miniatura = miniatura;
+	this.ativo = ativo;
     }
 
     public User() {
@@ -122,5 +124,13 @@ public class User {
 
     public void setMiniatura(String miniatura) {
 	this.miniatura = miniatura;
+    }
+
+    public boolean isAtivo() {
+	return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+	this.ativo = ativo;
     }
 }
