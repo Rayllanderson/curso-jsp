@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
+<html>
 <head>
 
 <link
@@ -107,8 +108,6 @@
 </head>
 <body>
 
-
-
 	<form class="form-horizontal" method="post" action="CadastrarUser"
 		method="POST" id="formUser" enctype="multipart/form-data">
 		<fieldset>
@@ -136,10 +135,6 @@
 					</div>
 
 					<div class="form-group">
-
-
-
-
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="Nome">ID</label>
 							<div class="col-md-8">
@@ -157,10 +152,6 @@
 									required type="text" style="width: 23.3%" maxlength="250"
 									value="${user.name}">
 							</div>
-
-
-
-
 						</div>
 
 
@@ -230,13 +221,13 @@
 								<input id="ativo" name="ativo" class="form-control input-md"
 									type="checkbox" style="width: 10%"
 									<%User user = (User) request.getAttribute("user");
-if (user != null) {
-	if (user.isAtivo()) {
-		out.print(" ");
-		out.print("checked=\"checked\"");
-		out.print(" ");
-	}
-}%>>
+											if (user != null) {
+												if (user.isAtivo()) {
+													out.print(" ");
+													out.print("checked=\"checked\"");
+													out.print(" ");
+												}
+											}%>>
 							</div>
 						</div>
 

@@ -25,13 +25,6 @@ public class LoginServlet extends HttpServlet {
 	super();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-
-	doPost(request, response);
-
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	String username = request.getParameter("username");
@@ -45,5 +38,4 @@ public class LoginServlet extends HttpServlet {
 	}
 	dispatcher.forward(request, response);
     }
-
 }
