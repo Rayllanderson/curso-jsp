@@ -24,7 +24,7 @@ public class ProductDaoJDBC implements ProductRepository {
 
     @Override
     public void save(Product product) throws UsernameExistenteException {
-	String sql = "INSERT INTO products(nome, quantidade, valor) VALUES (?, ?, ?)";
+	String sql = "INSERT INTO products(nome, quantidade, valor, categoria) VALUES (?, ?, ?, ?)";
 	PreparedStatement st = null;
 	try {
 	    if (!this.produtoExistente(product.getNome())) {
@@ -32,10 +32,12 @@ public class ProductDaoJDBC implements ProductRepository {
 		st.setString(1, product.getNome());
 		st.setInt(2, product.getQuantidade());
 		st.setBigDecimal(3, product.getValor());
+		st.setString(4, product.getCategoria());
 		st.execute();
 		conn.commit();
 	    } else {
-		throw new ProdutoExistenteException("Não foi possível cadastrar. " + "Produto de nome " + product.getNome() + " já está cadastrado!");
+		throw new ProdutoExistenteException("Não foi possível cadastrar. " + "Produto de nome "
+			+ product.getNome() + " já está cadastrado!");
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -76,7 +78,8 @@ public class ProductDaoJDBC implements ProductRepository {
 	String name = rs.getString("nome");
 	Integer quantidade = rs.getInt("quantidade");
 	BigDecimal valor = rs.getBigDecimal(4);
-	return new Product(rs.getLong("id"), name, quantidade, valor);
+	String categoria = rs.getString("categoria");
+	return new Product(rs.getLong("id"), name, quantidade, valor, categoria);
     }
 
     @Override
@@ -122,17 +125,20 @@ public class ProductDaoJDBC implements ProductRepository {
 		if (name.equals(this.findById(product.getId()).getNome())) {
 		    name = this.findById(product.getId()).getNome();
 		} else {
-		    throw new ProdutoExistenteException("Produto de nome " + product.getNome() + " já está cadastrado!");
+		    throw new ProdutoExistenteException(
+			    "Produto de nome " + product.getNome() + " já está cadastrado!");
 		}
 	    }
-	    st = conn.prepareStatement("update products set nome = ?, quantidade = ?, valor = ? where id = ?");
+	    String sql = "update products set nome = ?, quantidade = ?, valor = ?, categoria = ? where id = ?";
+	    st = conn.prepareStatement(sql);
+	    st = conn.prepareStatement(sql);
 	    st.setString(1, product.getNome());
 	    st.setInt(2, product.getQuantidade());
 	    st.setBigDecimal(3, product.getValor());
-	    st.setLong(4, product.getId());
+	    st.setString(4, product.getCategoria());
+	    st.setLong(5, product.getId());
 	    st.executeUpdate();
 	    conn.commit();
-
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    try {

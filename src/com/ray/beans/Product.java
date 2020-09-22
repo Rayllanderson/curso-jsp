@@ -7,12 +7,14 @@ public class Product {
     private String nome;
     private Integer quantidade;
     private BigDecimal valor;
+    private String categoria;
 
-    public Product(Long id, String nome, Integer quantidade, BigDecimal valor) {
+    public Product(Long id, String nome, Integer quantidade, BigDecimal valor, String categoria) {
 	this.id = id;
 	this.nome = nome;
 	this.quantidade = quantidade;
 	this.valor = valor;
+	this.setCategoria(categoria);
     }
     
     public Product(String nome, Integer quantidade, BigDecimal valor) {
@@ -53,5 +55,13 @@ public class Product {
 
     public void setValor(BigDecimal valor) {
 	this.valor = valor;
+    }
+
+    public String getCategoria() {
+	return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+	this.categoria = categoria;
     }
 }

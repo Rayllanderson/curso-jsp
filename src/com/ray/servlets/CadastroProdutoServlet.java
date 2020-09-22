@@ -73,7 +73,9 @@ public class CadastroProdutoServlet extends HttpServlet {
 	    String id = request.getParameter("id");
 	    Integer quantidade = Integer.parseInt(request.getParameter("quantidade"));
 	    BigDecimal valor = new BigDecimal(request.getParameter("valor").replace(",", "."));
-	    p = new Product(!id.isEmpty() ? Long.parseLong(id) : null, nome, quantidade, valor);
+	    String categoria = request.getParameter("categoria");
+	    System.out.println(categoria);
+	    p = new Product(!id.isEmpty() ? Long.parseLong(id) : null, nome, quantidade, valor, categoria);
 	    if (p.getId() == null) {
 		repository.save(p);
 	    } else {

@@ -38,4 +38,10 @@ public class Filter implements javax.servlet.Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
 	conn = DB.getConnection();
     }
+
+    @Override
+    public void destroy() {
+	// TODO Auto-generated method stub
+	
+    }
 }

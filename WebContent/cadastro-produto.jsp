@@ -1,5 +1,9 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.Catch"%>
+<%@page import="com.ray.beans.Product"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="com.ray.beans.Product" %>
+<%@ page import= "java.io.IOException" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -115,6 +119,53 @@
 					</div>
 
 
+
+			<%!public void setSelectedIfEquals(JspWriter out, HttpServletRequest request, String option) throws IOException {
+								Product prod = (Product) request.getAttribute("produto");
+								if (prod != null) {
+									    if (prod.getCategoria().equals(option)) {
+										out.print(" ");
+										out.print("selected=\"selected\"");
+										out.print(" ");
+									}
+								}
+							}
+							%>
+
+
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="Nome">Categoria
+						</label>
+						<div class="col-md-2">
+						<select id="categoria" name="categoria" style="margin-top: 7.5px; width: 50%; border-radius: 5px">
+							
+							
+							
+							
+							<option value="Alimentos"
+							
+							<%setSelectedIfEquals(out, request, "Alimentos"); %>
+						
+							>Alimentos</option>
+							<option value="Brinquedos"		
+							<%setSelectedIfEquals(out, request, "Brinquedos"); %>
+							>Brinquedos</option>
+							
+							<option value="Eletrônicos"
+							<%setSelectedIfEquals(out, request, "Eletrônicos"); %>
+							>Eletrônicos</option>
+							
+							<option value="Útils"
+							<%setSelectedIfEquals(out, request, "Útils"); %>
+							>Útils</option>
+							
+							<option value="Outros"
+							<%setSelectedIfEquals(out, request, "Outros"); %>
+							>Outros</option>
+						</select>
+						</div>
+					</div>
+
 					<!-- Button (Double) -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Cadastrar"></label>
@@ -122,9 +173,10 @@
 							<button id="Cadastrar" name="Cadastrar" class="btn btn-success"
 								type="Submit">Salvar</button>
 							<button id="Cancelar" name="Cancelar" class="btn btn-danger"
-								onclick=onclick= onclick=history.go(-1)>Cancelar</button>
+								onclick=history.go(-1)>Cancelar</button>
 						</div>
 					</div>
+
 
 				</div>
 			</div>
@@ -165,8 +217,9 @@
 												value="${produto.valor}"></c:out></td>
 										<td class="cell100 column4"><a
 											href="CadastrarProduto?acao=delete&produtoId=${produto.id}"><img
-												src="resource/img/excluir.png" onclick="return confirm('tem certeza que deseja excluir?')" width="30px" height="30px"
-												title="Excluir"></a></td>
+												src="resource/img/excluir.png"
+												onclick="return confirm('tem certeza que deseja excluir?')"
+												width="30px" height="30px" title="Excluir"></a></td>
 										<td class="cell100 column5"><a
 											href="CadastrarProduto?acao=editar&produtoId=${produto.id}"><img
 												src="resource/img/edit.png" width="30px" height="30px"
