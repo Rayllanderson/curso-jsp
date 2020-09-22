@@ -140,7 +140,6 @@ public class CadastroUserServlet extends HttpServlet {
     }
 
     private Arquivo processaArquivo(Part imagem) throws IOException {
-	new Base64();
 	String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
 	return new Arquivo(fotoBase64, imagem.getContentType());
     }

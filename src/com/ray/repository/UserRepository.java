@@ -12,6 +12,8 @@ public interface UserRepository {
     
     public User findById(Long id);
     
+    public List <User> findUsersByName(String name);
+    
     public List<User> findAll();
     
     public void update(User user);

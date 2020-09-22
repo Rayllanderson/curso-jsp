@@ -86,6 +86,10 @@ public class UserDaoJDBC implements UserRepository {
     @Override
     public List<User> findAll() {
 	String sql = "select * from users where username <> 'admin';";
+	return instanciarUserList(sql);
+    }
+
+    private List<User> instanciarUserList(String sql) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	List<User> list = new ArrayList<>();
@@ -109,7 +113,7 @@ public class UserDaoJDBC implements UserRepository {
 	    DB.closeResultSet(rs);
 	    DB.closeStatement(st);
 	}
-	return null;
+	return list;
     }
 
     private User instanciarUser(ResultSet rs) throws SQLException {
@@ -136,7 +140,6 @@ public class UserDaoJDBC implements UserRepository {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-
     }
 
     @Override
@@ -242,4 +245,12 @@ public class UserDaoJDBC implements UserRepository {
 	    DB.closeStatement(st);
 	}
     }
+
+    @Override
+    public List<User> findUsersByName(String name) {
+	String sql = "select * from users where name like '%" + name + "%' and username <> 'admin';";
+	return instanciarUserList(sql);
+	 // list.forEach((x) -> x.getFoto().setArquivoBase64(""));
+    }
 }
+

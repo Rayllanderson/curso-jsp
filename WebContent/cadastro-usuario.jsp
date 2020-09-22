@@ -263,11 +263,24 @@ if (user != null) {
 				</div>
 			</div>
 		</fieldset>
+	</form>
 
-
-
-
-
+	<form method="post" action="Pesquisar">
+		<ul>
+			<li>
+				<table style="margin-top: 5%; margin-bottom: -5%">
+					<tr>
+						<td>
+							<div class="input-group">
+								<input type="text"
+									id="consulta" name="consulta" class="form-control" style="margin-left:400%; border: 1px solid;"  title="Pesquisar contato" >
+							</div></td>
+						<td><input class="btn btn-success" type="submit"
+							value="Pesquisar" style="margin-left: -51%"></td>
+					</tr>
+				</table>
+			</li>
+		</ul>
 	</form>
 
 
@@ -340,10 +353,10 @@ if (user != null) {
 												title="Editar"></a></td>
 										<td>
 											<div class="col-md-2">
-												<c:if test="${user.ativo}" >
+												<c:if test="${user.ativo}">
 													<p>Sim</p>
 												</c:if>
-												<c:if test="${!user.ativo}" >
+												<c:if test="${!user.ativo}">
 													<p>Não</p>
 												</c:if>
 											</div>
