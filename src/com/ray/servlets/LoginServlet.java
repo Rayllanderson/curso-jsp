@@ -36,15 +36,14 @@ public class LoginServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
+	RequestDispatcher dispatcher;
 	if (userRepository.login(username, password)) {
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("acesso-liberado.jsp");
-	    dispatcher.forward(request, response);
+	    dispatcher = request.getRequestDispatcher("acesso-liberado.jsp");
 	} else {
-	   request.setAttribute("loginInvalido", "Login ou senha incorretos");
-	   RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-	   dispatcher.forward(request, response);
+	    request.setAttribute("loginInvalido", "Login ou senha incorretos");
+	    dispatcher = request.getRequestDispatcher("index.jsp");
 	}
-
+	dispatcher.forward(request, response);
     }
 
 }

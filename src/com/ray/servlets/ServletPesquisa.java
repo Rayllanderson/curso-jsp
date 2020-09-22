@@ -37,17 +37,15 @@ public class ServletPesquisa extends HttpServlet {
 
 	String consulta = request.getParameter("consulta");
 	if (consulta != null) {
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
 	    List<User> list = repository.findUsersByName(consulta);
 	    if (!list.isEmpty()) {
 		request.setAttribute("usuarios", list);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-		dispatcher.forward(request, response);
 	    } else {
 		request.setAttribute("msg", "Nenhum usuário encontrado");
 		request.setAttribute("usuarios", repository.findAll());
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastro-usuario.jsp");
-		dispatcher.forward(request, response);
 	    }
+	    dispatcher.forward(request, response);
 	}
     }
 
