@@ -369,6 +369,12 @@
 		if (!mensagem == '') {
 			alert(mensagem);
 		}
+		
+
+	    if ( window.history.replaceState ) {
+	        window.history.replaceState( null, null, window.location.href );
+	    }
+
 	</script>
 
 	<script src="javascript/jquery.mask.js"></script>
